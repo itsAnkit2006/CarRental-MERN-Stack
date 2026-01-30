@@ -1,10 +1,73 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Title from '../components/Title'
+import CarCard from '../components/CarCard'
+import { assets, dummyCarData } from '../assets/assets'
 
 const Cars = () => {
+
+  const [input, setInput] = useState('')
+
   return (
-    <div>
-      
+    <div className="min-h-screen bg-[#0B0B0B] text-white">
+
+  {/* Header */}
+  <div className="flex flex-col items-center py-20 px-6 text-center relative overflow-hidden">
+    
+    {/* Glow */}
+    <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-yellow-500/10 blur-[160px] rounded-full"></div>
+
+    <div className="relative z-10">
+      <Title
+        title="Available Cars"
+        subTitle="Browse our selection of premium vehicles available for your next adventure."
+        variant="dark"
+      />
     </div>
+
+    {/* Search Bar */}
+    <div
+      className="
+        relative z-10 mt-8 max-w-xl w-full h-12
+        flex items-center px-5 rounded-full
+        bg-white/5 backdrop-blur-xl
+        border border-yellow-500/15
+        shadow-[0px_12px_30px_rgba(0,0,0,0.55)]
+      "
+    >
+      <img src={assets.search_icon} className="w-5 h-5 mr-3 opacity-80" alt="" />
+
+      <input
+        onChange={(e) => setInput(e.target.value)}
+        value={input}
+        type="text"
+        placeholder="Search by make, model, or features"
+        className="
+          w-full h-full bg-transparent outline-none
+          text-gray-200 placeholder-gray-500
+        "
+      />
+
+      <img src={assets.filter_icon} className="w-5 h-5 ml-3 opacity-80" alt="" />
+    </div>
+  </div>
+
+  {/* Cars Grid */}
+  <div className="px-6 md:px-16 lg:px-24 xl:px-32 pb-24">
+    <p className="text-gray-400 xl:px-20 max-w-7xl mx-auto">
+      Showing <span className="text-primary font-semibold">{dummyCarData.length}</span> Cars
+    </p>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 xl:px-20 max-w-7xl mx-auto">
+      {dummyCarData.map((car, index) => (
+        <div key={index}>
+          <CarCard car={car} />
+        </div>
+      ))}
+    </div>
+  </div>
+
+</div>
+
   )
 }
 
