@@ -1,9 +1,17 @@
 import React, { useState } from 'react'
 import { assets, cityList } from '../assets/assets'
+import { useAppContext } from '../context/AppContext'
 
 const Hero = () => {
 
     const [pickupLocation, setPickupLocation] = useState('')
+
+    const { pickupDate, setPickupDate, returnDate, setReturnDate, navigate } = useAppContext()
+
+    const handleSearch = (e)=>{
+      e.preventDefault()
+      navigate('/cars?pickupLocation=' + pickupLocation + '&pickupDate=' + pickupDate + '&returnDate=' + returnDate)
+    }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-14 text-center
@@ -21,6 +29,7 @@ bg-gradient-to-b from-[#0B0B0B] via-[#111111] to-[#0B0B0B] text-white px-6"
   </p>
 
   <form
+    onSubmit={handleSearch}
     className="
     flex flex-col md:flex-row items-start md:items-center justify-between
     gap-6 md:gap-10
@@ -62,6 +71,8 @@ bg-gradient-to-b from-[#0B0B0B] via-[#111111] to-[#0B0B0B] text-white px-6"
           Pick-up Date
         </label>
         <input
+          value={pickupDate}
+          onChange={e=> setPickupDate(e.target.value)}
           type="date"
           id="pickup-date"
           min={new Date().toISOString().split("T")[0]}
@@ -81,6 +92,8 @@ bg-gradient-to-b from-[#0B0B0B] via-[#111111] to-[#0B0B0B] text-white px-6"
           Return Date
         </label>
         <input
+          value={returnDate}
+          onChange={e=> setReturnDate(e.target.value)}
           type="date"
           id="return-date"
           className="

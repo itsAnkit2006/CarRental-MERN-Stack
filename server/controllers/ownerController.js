@@ -139,7 +139,7 @@ export const getDashboardData = async (req, res)=>{
             monthlyRevenue
         }
 
-        return res.json({success: false, dashboardData})
+        return res.json({success: true, dashboardData})
     } catch (error) {
         console.log(error.message);
         res.json({success: false, message: error.message})
@@ -147,7 +147,7 @@ export const getDashboardData = async (req, res)=>{
 }
 
 // API to update user image
-export const updateUserImage async (req, res)=>{
+export const updateUserImage = async (req, res)=>{
     try {
         const { _id } = req.user;
 

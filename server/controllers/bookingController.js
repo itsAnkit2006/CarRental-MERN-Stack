@@ -19,7 +19,7 @@ export const checkAvailabilityOfCar = async(req, res)=>{
         const {location,pickupDate, returnDate} = req.body
 
         // fetch all available cars for the given location
-        const cars = Car.find({location, isAvailable: true})
+        const cars = await Car.find({location, isAvailable: true})
 
         // check car availability for the given date range using promise
         const availableCarsPromises = cars.map(async (car)=>{
@@ -46,7 +46,7 @@ export const createBooking = async(req, res)=>{
 
         const isAvailable = await checkAvailability(car, pickupDate, returnDate)
         if(!isAvailable){
-            res.json({success:false, message: "Car is not available"})
+            return res.json({success:false, message: "Car is not available"})
         }
 
         const carData = await Car.findById(car)
@@ -54,7 +54,7 @@ export const createBooking = async(req, res)=>{
         // Calculate price based on pickupDate and returnDate
         const picked = new Date(pickupDate)
         const returned = new Date(returnDate)
-        const noOfDays = Math.ceil((returned - picked)) / (1000 * 60 * 60 * 24)
+        const noOfDays = Math.ceil((returned - picked) / (1000 * 60 * 60 * 24))
         const price = carData.pricePerDay * noOfDays;
 
         await Booking.create({car, owner: carData.owner, user: _id, pickupDate, returnDate, price})
@@ -73,7 +73,7 @@ export const getUserBookings = async (req, res)=>{
         const {_id} = req.user;
         const bookings = await Booking.find({user: _id}).populate("car").sort({createdAt: -1})
 
-        res.json({success: true, message: bookings})
+        res.json({success: true, bookings})
 
 
     } catch (error) {
@@ -90,7 +90,7 @@ export const getOwnerBookings = async (req, res)=>{
         }
         const bookings = await Booking.find({owner: req.user._id}).populate('car user').select("-user.password").sort({createdAt: -1})
 
-        res.json({success: true, message: bookings})
+        res.json({success: true, bookings})
 
     } catch (error) {
         console.log(error.message);
