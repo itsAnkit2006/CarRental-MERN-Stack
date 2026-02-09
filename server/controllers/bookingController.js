@@ -1,5 +1,8 @@
 import Booking from "../models/Booking.js"
 import Car from "../models/Car.js"
+import Payment from "../models/Payment.js"
+import TransactionLog from "../models/TransactionLog.js"
+import UserVerification from "../models/UserVerification.js";
 
 
 // Function to Check Availability of Car for a given Date
@@ -42,6 +45,17 @@ export const checkAvailabilityOfCar = async(req, res)=>{
 export const createBooking = async(req, res)=>{
     try {
         const {_id} = req.user;
+
+        // Verify user before booking
+        const verification = await UserVerification.findOne({ user: _id });
+
+        if (!verification || verification.status !== "verified") {
+        return res.json({
+            success: false,
+            message: "You must complete verification before booking",
+        });
+        }
+
         const {car, pickupDate, returnDate} = req.body;
 
         const isAvailable = await checkAvailability(car, pickupDate, returnDate)
@@ -51,13 +65,55 @@ export const createBooking = async(req, res)=>{
 
         const carData = await Car.findById(car)
 
+        if (!carData || !carData.owner) {
+        return res.json({
+            success:false,
+            message:"Car owner not configured"
+        })
+        }
+
         // Calculate price based on pickupDate and returnDate
         const picked = new Date(pickupDate)
         const returned = new Date(returnDate)
         const noOfDays = Math.ceil((returned - picked) / (1000 * 60 * 60 * 24))
         const price = carData.pricePerDay * noOfDays;
 
-        await Booking.create({car, owner: carData.owner, user: _id, pickupDate, returnDate, price})
+        const booking = await Booking.create({car, owner: carData.owner, user: _id, pickupDate, returnDate, price})
+
+        // Create Payment Record (UPI/CARD/OFFLINE)
+        const paymentMethod = req.body.paymentMethod || "OFFLINE";
+        const isOnline = paymentMethod === "UPI" || paymentMethod === "CARD";
+
+        const payment = await Payment.create({
+            booking: booking._id,
+            user: _id,
+            owner: carData.owner,
+            amount: price,
+            currency: "INR",
+            paymentMethod,
+            status: isOnline ? "SUCCESS" : "PENDING",
+            transactionId: isOnline ? `TXN_${Date.now()}` : "",
+            paidAt: isOnline ? new Date() : null,
+        })
+
+        // Transaction logs
+        await TransactionLog.create({
+            user: _id,
+            action: "BOOKING_CREATED",
+            booking: booking._id,
+            car: car,
+            amount: price,
+            message: "Booking created successfully",
+        })
+
+        await TransactionLog.create({
+            user: _id,
+            action: isOnline ? "PAYMENT_SUCCESS" : "PAYMENT_PENDING",
+            booking: booking._id,
+            payment: payment._id,
+            amount: price,
+            message: isOnline ? `Payment completed via ${paymentMethod}` : "Payment pending (offline)",
+        })
 
         res.json({success: true, message: "Booking Created"})
 

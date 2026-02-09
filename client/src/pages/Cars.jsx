@@ -5,6 +5,7 @@ import { assets  } from '../assets/assets'
 import { useSearchParams } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
+import {motion} from 'motion/react'
 
 const Cars = () => {
 
@@ -59,7 +60,11 @@ const Cars = () => {
     <div className="min-h-screen bg-[#0B0B0B] text-white">
 
   {/* Header */}
-  <div className="flex flex-col items-center py-20 px-6 text-center relative overflow-hidden">
+  <motion.div
+  initial={{y: 30, opacity: 0}}
+  animate={{y: 0, opacity: 1}}
+  transition={{duration: 0.6, ease: 'easeOut'}}
+  className="flex flex-col items-center py-20 px-6 text-center relative overflow-hidden">
     
     {/* Glow */}
     <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-yellow-500/10 blur-[160px] rounded-full"></div>
@@ -73,7 +78,11 @@ const Cars = () => {
     </div>
 
     {/* Search Bar */}
-    <div
+    <motion.div
+      initial={{y: 20, opacity: 0}}
+      animate={{y: 0, opacity: 1}}
+      transition={{duration: 0.5, delay: 0.3}}
+
       className="
         relative z-10 mt-8 max-w-xl w-full h-12
         flex items-center px-5 rounded-full
@@ -96,23 +105,31 @@ const Cars = () => {
       />
 
       <img src={assets.filter_icon} className="w-5 h-5 ml-3 opacity-80" alt="" />
-    </div>
-  </div>
+    </motion.div>
+  </motion.div>
 
   {/* Cars Grid */}
-  <div className="px-6 md:px-16 lg:px-24 xl:px-32 pb-24">
+  <motion.div
+  initial={{ opacity: 0}}
+  animate={{opacity: 1}}
+  transition={{duration: 0.5, delay: 0.6}}
+  className="px-6 md:px-16 lg:px-24 xl:px-32 pb-24">
     <p className="text-gray-400 xl:px-20 max-w-7xl mx-auto">
       Showing <span className="text-primary font-semibold">{filteredCars.length}</span> Cars
     </p>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 xl:px-20 max-w-7xl mx-auto">
       {filteredCars.map((car, index) => (
-        <div key={index}>
+        <motion.div
+        initial={{y: 20, opacity: 0}}
+        animate={{y: 0, opacity: 1}}
+        transition={{duration: 0.4, delay: 0.1 * index}}
+        key={index}>
           <CarCard car={car} />
-        </div>
+        </motion.div>
       ))}
     </div>
-  </div>
+  </motion.div>
 
 </div>
 

@@ -27,19 +27,21 @@ const CarCard = ({car}) => {
     />
 
     {/* Available Tag */}
-    {car.isAvailable && (
-      <p
-        className="
-          absolute top-4 left-4
-          bg-primary text-black
-          text-xs font-bold
-          px-3 py-1 rounded-full
-          shadow-md shadow-yellow-500/20
-        "
+    <span
+      className={`
+        absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold
+        ${car.availableFrom
+          ? "bg-yellow-500 text-black"
+          : "bg-green-900 text-white"}
+      `}
       >
-        Available Now
-      </p>
-    )}
+      {
+        car.availableFrom
+          ? `Available after ${new Date(car.availableFrom).toLocaleDateString()}`
+          : "Available Now"
+      }
+    </span>
+
 
     {/* Price */}
     <div
