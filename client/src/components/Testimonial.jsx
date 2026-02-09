@@ -60,10 +60,24 @@ const Testimonial = () => {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.25 }}
-      className="py-28 px-6 md:px-16 lg:px-24 xl:px-44 bg-[#0B0B0B] text-white relative overflow-hidden"
+      className="
+        py-16 sm:py-20 lg:py-28
+        px-4 sm:px-6 md:px-12 lg:px-20 xl:px-40
+        bg-[#0B0B0B] text-white
+        relative overflow-hidden
+      "
     >
       {/* Glow */}
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[850px] h-[850px] bg-yellow-500/10 blur-[160px] rounded-full" />
+      <div
+        className="
+          absolute top-10 left-1/2 -translate-x-1/2
+          w-[420px] h-[420px]
+          sm:w-[650px] sm:h-[650px]
+          lg:w-[850px] lg:h-[850px]
+          bg-yellow-500/10 blur-[150px]
+          rounded-full pointer-events-none
+        "
+      />
 
       <div className="relative z-10">
         <motion.div variants={item}>
@@ -74,8 +88,13 @@ const Testimonial = () => {
           />
         </motion.div>
 
+        {/* Grid */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12"
+          className="
+            grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
+            gap-6 sm:gap-7 lg:gap-8
+            mt-10 sm:mt-12
+          "
           variants={container}
           initial="hidden"
           whileInView="show"
@@ -92,21 +111,32 @@ const Testimonial = () => {
               transition={{ type: "spring", stiffness: 180, damping: 16 }}
               className="
                 bg-white/5 border border-yellow-500/15 backdrop-blur-xl
-                p-7 rounded-2xl
+                p-5 sm:p-6 lg:p-7
+                rounded-2xl
                 shadow-[0px_12px_28px_rgba(0,0,0,0.55)]
                 transition-all duration-300
               "
             >
               {/* Header */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <img
-                  className="w-12 h-12 rounded-full border border-yellow-500/20 object-cover"
+                  className="
+                    w-10 h-10 sm:w-12 sm:h-12
+                    rounded-full
+                    border border-yellow-500/20
+                    object-cover
+                  "
                   src={testimonial.image}
                   alt={testimonial.name}
                 />
-                <div>
-                  <p className="text-lg font-semibold text-white">{testimonial.name}</p>
-                  <p className="text-sm text-gray-400">{testimonial.location}</p>
+
+                <div className="min-w-0">
+                  <p className="text-base sm:text-lg font-semibold text-white truncate">
+                    {testimonial.name}
+                  </p>
+                  <p className="text-xs sm:text-sm text-gray-400 truncate">
+                    {testimonial.location}
+                  </p>
                 </div>
               </div>
 
@@ -114,7 +144,7 @@ const Testimonial = () => {
               <motion.div
                 initial={{ opacity: 0.7, scale: 0.98 }}
                 whileHover={{ opacity: 1, scale: 1.02 }}
-                className="flex items-center gap-1 mt-5"
+                className="flex items-center gap-1 mt-4 sm:mt-5"
               >
                 {Array(5)
                   .fill(0)
@@ -123,13 +153,13 @@ const Testimonial = () => {
                       key={i}
                       src={assets.star_icon}
                       alt="star-icon"
-                      className="w-4 h-4 opacity-90"
+                      className="w-3.5 h-3.5 sm:w-4 sm:h-4 opacity-90"
                     />
                   ))}
               </motion.div>
 
               {/* Review */}
-              <p className="text-gray-300 mt-5 font-light leading-relaxed">
+              <p className="text-gray-300 mt-4 sm:mt-5 font-light leading-relaxed text-sm sm:text-base">
                 "{testimonial.testimonial}"
               </p>
             </motion.div>

@@ -40,27 +40,45 @@ const Hero = () => {
       initial="hidden"
       animate="show"
       className="
-        min-h-screen flex flex-col items-center justify-center gap-14
-        text-center px-6 relative overflow-hidden
+        min-h-screen
+        flex flex-col items-center justify-center
+        gap-10 sm:gap-12 lg:gap-14
+        text-center
+        px-4 sm:px-6
+        relative overflow-hidden
         bg-gradient-to-b from-[#0B0B0B] via-[#111111] to-[#0B0B0B]
         text-white
       "
     >
       {/* Background glow */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="absolute inset-0 pointer-events-none"
-      >
-        <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-yellow-500/10 blur-[160px] rounded-full" />
-        <div className="absolute bottom-[-250px] right-[-120px] w-[600px] h-[600px] bg-yellow-500/10 blur-[160px] rounded-full" />
+      <motion.div className="absolute inset-0 pointer-events-none">
+        <div className="
+          absolute top-[-150px] left-1/2 -translate-x-1/2
+          w-[500px] h-[500px]
+          sm:w-[700px] sm:h-[700px]
+          lg:w-[900px] lg:h-[900px]
+          bg-yellow-500/10 blur-[160px] rounded-full
+        "/>
+
+        <div className="
+          absolute bottom-[-200px] right-[-120px]
+          w-[350px] h-[350px]
+          sm:w-[500px] sm:h-[500px]
+          lg:w-[600px] lg:h-[600px]
+          bg-yellow-500/10 blur-[160px] rounded-full
+        "/>
       </motion.div>
 
       {/* Title */}
       <motion.h1
         variants={fadeUp}
         transition={{ type: "spring", stiffness: 120, damping: 16 }}
-        className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight relative z-10"
+        className="
+          text-3xl sm:text-4xl md:text-5xl lg:text-6xl
+          font-extrabold tracking-tight
+          leading-tight
+          relative z-10
+        "
       >
         Luxury Cars on{" "}
         <span className="text-primary drop-shadow-[0_0_12px_rgba(255,214,0,0.40)]">
@@ -72,10 +90,15 @@ const Hero = () => {
       <motion.p
         variants={fadeUp}
         transition={{ duration: 0.45 }}
-        className="max-w-2xl text-gray-400 text-sm md:text-base -mt-6 relative z-10"
+        className="
+          max-w-xl sm:max-w-2xl
+          text-gray-400
+          text-sm sm:text-base
+          -mt-4 sm:-mt-6
+          relative z-10
+        "
       >
-        Book premium cars in seconds. Choose location, pick dates, and drive in
-        style.
+        Book premium cars in seconds. Choose location, pick dates, and drive in style.
       </motion.p>
 
       {/* Search Form */}
@@ -85,18 +108,22 @@ const Hero = () => {
         onSubmit={handleSearch}
         className="
           relative z-10
-          flex flex-col md:flex-row items-start md:items-center justify-between
-          gap-6 md:gap-10
-          p-6 md:px-10 rounded-2xl md:rounded-full
-          w-full max-w-80 md:max-w-5xl
+          flex flex-col lg:flex-row
+          items-stretch lg:items-center
+          gap-5 lg:gap-8
+          p-5 sm:p-6 lg:px-8
+          rounded-2xl lg:rounded-full
+          w-full max-w-md sm:max-w-xl lg:max-w-5xl
           border border-yellow-500/20
           bg-white/5 backdrop-blur-xl
           shadow-[0px_12px_30px_rgba(0,0,0,0.40)]
         "
       >
-        <div className="flex flex-col md:flex-row items-start md:items-center gap-10 md:gap-14 w-full">
-          {/* Pickup Location */}
-          <div className="flex flex-col items-start gap-2 w-full md:w-auto">
+        {/* Inputs Container */}
+        <div className="flex flex-col lg:flex-row gap-5 lg:gap-10 w-full">
+
+          {/* Location */}
+          <div className="flex flex-col gap-2 w-full">
             <label className="text-sm text-gray-300 font-medium">
               Pickup Location
             </label>
@@ -106,11 +133,11 @@ const Hero = () => {
               value={pickupLocation}
               onChange={(e) => setPickupLocation(e.target.value)}
               className="
-                w-full md:w-auto
+                w-full
                 bg-[#0B0B0B] text-gray-200 outline-none
                 font-semibold cursor-pointer
                 border border-yellow-500/15 rounded-lg
-                px-3 py-2
+                px-3 py-2.5
                 focus:border-yellow-400 transition-all
               "
             >
@@ -128,23 +155,20 @@ const Hero = () => {
           </div>
 
           {/* Pickup Date */}
-          <div className="flex flex-col items-start gap-2 w-full md:w-auto">
-            <label
-              htmlFor="pickup-date"
-              className="text-sm text-gray-300 font-medium"
-            >
+          <div className="flex flex-col gap-2 w-full">
+            <label className="text-sm text-gray-300 font-medium">
               Pick-up Date
             </label>
             <input
               value={pickupDate}
               onChange={(e) => setPickupDate(e.target.value)}
               type="date"
-              id="pickup-date"
               min={new Date().toISOString().split("T")[0]}
               className="
+                w-full
                 text-sm text-gray-200
                 bg-white/5 border border-yellow-500/15
-                rounded-lg px-3 py-2 outline-none
+                rounded-lg px-3 py-2.5 outline-none
                 focus:border-yellow-400 transition-all
               "
               required
@@ -152,22 +176,19 @@ const Hero = () => {
           </div>
 
           {/* Return Date */}
-          <div className="flex flex-col items-start gap-2 w-full md:w-auto">
-            <label
-              htmlFor="return-date"
-              className="text-sm text-gray-300 font-medium"
-            >
+          <div className="flex flex-col gap-2 w-full">
+            <label className="text-sm text-gray-300 font-medium">
               Return Date
             </label>
             <input
               value={returnDate}
               onChange={(e) => setReturnDate(e.target.value)}
               type="date"
-              id="return-date"
               className="
+                w-full
                 text-sm text-gray-200
                 bg-white/5 border border-yellow-500/15
-                rounded-lg px-3 py-2 outline-none
+                rounded-lg px-3 py-2.5 outline-none
                 focus:border-yellow-400 transition-all
               "
               required
@@ -183,8 +204,9 @@ const Hero = () => {
           }}
           whileTap={{ scale: 0.96 }}
           className="
-            flex items-center justify-center gap-2 px-10 py-3
-            max-sm:mt-2
+            flex items-center justify-center gap-2
+            w-full lg:w-auto
+            px-8 py-3
             bg-primary hover:bg-primary-dull
             text-black font-bold
             rounded-full cursor-pointer
@@ -197,13 +219,16 @@ const Hero = () => {
         </motion.button>
       </motion.form>
 
-      {/* Car image */}
+      {/* Car Image */}
       <motion.img
         variants={fadeUp}
         transition={{ duration: 0.6 }}
         animate={{ y: [0, -10, 0] }}
-        // floating effect
-        className="max-h-80 md:max-h-[360px] drop-shadow-[0_25px_45px_rgba(0,0,0,0.65)] select-none relative z-10"
+        className="
+          max-h-60 sm:max-h-72 md:max-h-80 lg:max-h-[360px]
+          drop-shadow-[0_25px_45px_rgba(0,0,0,0.65)]
+          select-none relative z-10
+        "
         src={assets.main_car}
         alt="car"
       />

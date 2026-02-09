@@ -49,8 +49,12 @@ const Navbar = () => {
       initial="hidden"
       animate="show"
       transition={{ type: "spring", stiffness: 180, damping: 18 }}
-      className={`flex items-center justify-between px-6 md:px-10 xl:px-32 py-4
-        border-b border-yellow-500/20 sticky top-0 z-50
+      className={`
+        flex items-center justify-between
+        px-4 sm:px-6 md:px-10 xl:px-32
+        py-3 sm:py-4
+        border-b border-yellow-500/20
+        sticky top-0 z-50
         ${location.pathname === "/" ? "bg-[#0B0B0B]" : "bg-[#111111]"}
       `}
     >
@@ -62,7 +66,7 @@ const Navbar = () => {
           transition={{ type: "spring", stiffness: 260, damping: 14 }}
           src={assets.logo}
           alt="logo"
-          className="h-8 select-none"
+          className="h-7 sm:h-8 select-none"
         />
       </Link>
 
@@ -71,7 +75,7 @@ const Navbar = () => {
         variants={menuContainer}
         initial="hidden"
         animate="show"
-        className="hidden sm:flex items-center gap-10"
+        className="hidden sm:flex items-center gap-6 lg:gap-10"
       >
         {menuLinks.map((link, index) => (
           <motion.div key={index} variants={menuItem}>
@@ -95,7 +99,12 @@ const Navbar = () => {
         {/* Search */}
         <motion.div
           variants={menuItem}
-          className="hidden lg:flex items-center text-sm gap-2 border border-yellow-500/25 bg-white/5 px-4 py-2 rounded-full w-[260px]"
+          className="
+            hidden lg:flex items-center text-sm gap-2
+            border border-yellow-500/25 bg-white/5
+            px-3 py-2 rounded-full
+            w-[220px] xl:w-[260px]
+          "
         >
           <input
             type="text"
@@ -106,7 +115,7 @@ const Navbar = () => {
         </motion.div>
 
         {/* Buttons */}
-        <motion.div variants={menuItem} className="flex items-center gap-4">
+        <motion.div variants={menuItem} className="flex items-center gap-3 lg:gap-4">
           <motion.button
             whileHover={{ y: -1 }}
             whileTap={{ scale: 0.97 }}
@@ -124,8 +133,10 @@ const Navbar = () => {
             whileTap={{ scale: 0.97 }}
             onClick={() => (user ? logout() : setShowLogin(true))}
             className="
-              cursor-pointer px-8 py-2 rounded-xl font-bold
-              bg-primary hover:bg-primary-dull transition-all
+              cursor-pointer px-6 lg:px-8 py-2
+              rounded-xl font-bold
+              bg-primary hover:bg-primary-dull
+              transition-all
               text-black shadow-lg shadow-yellow-500/10
             "
           >
@@ -153,8 +164,10 @@ const Navbar = () => {
             exit={{ x: "100%", opacity: 0 }}
             transition={{ type: "spring", stiffness: 200, damping: 22 }}
             className={`
-              sm:hidden fixed top-16 right-0 w-full h-screen z-50
-              px-6 py-8
+              sm:hidden fixed top-[60px] right-0
+              w-full h-[calc(100vh-60px)]
+              overflow-y-auto
+              z-50 px-6 py-8
               border-t border-yellow-500/20
               ${location.pathname === "/" ? "bg-[#0B0B0B]/95" : "bg-[#111111]/95"}
               backdrop-blur-md
@@ -171,7 +184,7 @@ const Navbar = () => {
                   <Link
                     to={link.path}
                     onClick={() => setOpen(false)}
-                    className="text-gray-200 font-semibold hover:text-yellow-400 transition-all"
+                    className="text-lg text-gray-200 font-semibold hover:text-yellow-400 transition-all"
                   >
                     {link.name}
                   </Link>
@@ -190,8 +203,9 @@ const Navbar = () => {
                   onClick={() => (user ? logout() : setShowLogin(true))}
                   className="
                     px-8 py-3 rounded-xl font-bold
-                    bg-primary hover:bg-primary-dull transition-all
-                    text-black shadow-lg shadow-yellow-500/10
+                    bg-primary hover:bg-primary-dull
+                    transition-all text-black
+                    shadow-lg shadow-yellow-500/10
                   "
                 >
                   {user ? "Logout" : "Login"}

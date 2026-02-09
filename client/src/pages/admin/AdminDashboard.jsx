@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const AdminDashboard = () => {
+
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -13,11 +14,17 @@ const AdminDashboard = () => {
   const fetchStats = async () => {
     try {
       setLoading(true);
+
       const { data } = await axios.get("/api/admin/stats", {
         headers: { Authorization: token },
       });
-      if (data.success) setStats(data.stats);
-      else toast.error(data.message);
+
+      if (data.success) {
+        setStats(data.stats);
+      } else {
+        toast.error(data.message);
+      }
+
     } catch (e) {
       toast.error(e.message);
     } finally {
@@ -29,27 +36,70 @@ const AdminDashboard = () => {
     fetchStats();
   }, []);
 
-  return (
-    <div>
-      <h2 className="text-xl font-bold">Dashboard</h2>
-      <p className="text-gray-400 text-sm mt-1">Overview of platform activity.</p>
+  const cards = [
+    { label: "Users", value: stats?.users || 0 },
+    { label: "Cars", value: stats?.cars || 0 },
+    { label: "Bookings", value: stats?.bookings || 0 },
+    { label: "Pending Verifications", value: stats?.pendingVerifications || 0 },
+  ];
 
+  return (
+    <div
+      className="
+        min-h-screen
+        bg-[#111111] text-white
+        px-4 sm:px-6 md:px-10
+        py-8 sm:py-10
+        relative overflow-hidden
+      "
+    >
+
+      {/* Glow */}
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-yellow-500/10 blur-[150px] rounded-full pointer-events-none" />
+
+      {/* Header */}
+      <div className="relative z-10">
+        <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          Admin Dashboard
+        </h2>
+
+        <p className="text-gray-400 text-sm mt-2">
+          Overview of platform activity.
+        </p>
+      </div>
+
+      {/* Content */}
       {loading ? (
-        <p className="mt-6 text-gray-400">Loading...</p>
+        <div className="mt-10 text-gray-400">
+          Loading statistics...
+        </div>
       ) : (
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {[
-            { label: "Users", value: stats?.users || 0 },
-            { label: "Cars", value: stats?.cars || 0 },
-            { label: "Bookings", value: stats?.bookings || 0 },
-            { label: "Pending Verifications", value: stats?.pendingVerifications || 0 },
-          ].map((card, idx) => (
+        <div
+          className="
+            relative z-10 mt-10
+            grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4
+            gap-6
+          "
+        >
+          {cards.map((card) => (
             <div
-              key={idx}
-              className="rounded-3xl bg-white/5 border border-yellow-500/15 p-6 shadow-[0px_14px_40px_rgba(0,0,0,0.60)]"
+              key={card.label}
+              className="
+                rounded-3xl p-6
+                bg-white/5 backdrop-blur-xl
+                border border-yellow-500/15
+                shadow-[0px_14px_40px_rgba(0,0,0,0.60)]
+                hover:-translate-y-1
+                transition-all duration-300
+              "
             >
-              <p className="text-sm text-gray-400">{card.label}</p>
-              <h1 className="text-3xl font-extrabold mt-2 text-yellow-300">{card.value}</h1>
+              <p className="text-sm text-gray-400 font-semibold uppercase tracking-wide">
+                {card.label}
+              </p>
+
+              <h1 className="text-3xl font-extrabold mt-3 text-primary">
+                {card.value}
+              </h1>
             </div>
           ))}
         </div>

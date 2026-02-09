@@ -54,16 +54,29 @@ const FeaturedSection = () => {
       whileInView="show"
       viewport={{ once: true, amount: 0.25 }}
       className="
-        flex flex-col items-center py-24
-        px-6 md:px-16 lg:px-24 xl:px-32
+        flex flex-col items-center
+        py-16 sm:py-20 lg:py-24
+        px-4 sm:px-6 md:px-12 lg:px-20 xl:px-32
         bg-[#0B0B0B] text-white relative overflow-hidden
       "
     >
       {/* Background glow */}
-      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-yellow-500/10 blur-[150px] rounded-full" />
+      <div
+        className="
+          absolute top-0 left-1/2 -translate-x-1/2
+          w-[420px] h-[420px]
+          sm:w-[600px] sm:h-[600px]
+          lg:w-[800px] lg:h-[800px]
+          bg-yellow-500/10 blur-[120px]
+          rounded-full pointer-events-none
+        "
+      />
 
       {/* Title */}
-      <motion.div variants={fadeUp} className="relative z-10 w-full flex flex-col items-center">
+      <motion.div
+        variants={fadeUp}
+        className="relative z-10 w-full flex flex-col items-center text-center"
+      >
         <Title
           title="Featured Vehicles"
           subTitle="Explore our selection of premium vehicles available for your next adventure."
@@ -73,7 +86,13 @@ const FeaturedSection = () => {
       {/* Grid */}
       <motion.div
         variants={grid}
-        className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12 w-full"
+        className="
+          relative z-10
+          grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
+          gap-6 sm:gap-7 lg:gap-8
+          mt-10 sm:mt-12
+          w-full
+        "
       >
         {cars.slice(0, 6).map((carItem) => (
           <motion.div
@@ -98,9 +117,11 @@ const FeaturedSection = () => {
           scrollTo(0, 0);
         }}
         className="
-          relative z-10 mt-14
+          relative z-10 mt-12 sm:mt-14
           flex items-center justify-center gap-2
-          px-8 py-3 rounded-full font-semibold
+          px-6 sm:px-8 py-2.5 sm:py-3
+          text-sm sm:text-base
+          rounded-full font-semibold
           border border-yellow-500/30 text-yellow-400
           hover:bg-yellow-400 hover:text-black
           transition-all duration-200 cursor-pointer

@@ -12,3 +12,16 @@
   --color-light: #F8FAFC;
   --color-borderColor: rgba(255, 214, 0, 0.20);
 }
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.25s ease-out;
+}
