@@ -6,6 +6,9 @@ import { toast } from "react-hot-toast";
 import { motion, AnimatePresence } from "motion/react";
 
 const Navbar = () => {
+
+  const [search, setSearch] = useState("");
+
   const { setShowLogin, user, logout, isOwner, axios, setIsOwner } = useAppContext();
 
   const location = useLocation();
@@ -41,6 +44,14 @@ const Navbar = () => {
   const menuItem = {
     hidden: { y: 8, opacity: 0 },
     show: { y: 0, opacity: 1 },
+  };
+
+  const handleSearch = (e) => {
+  e.preventDefault();
+
+  if (!search.trim()) return;
+
+  navigate(`/cars?search=${encodeURIComponent(search)}`);
   };
 
   return (
@@ -97,7 +108,8 @@ const Navbar = () => {
         ))}
 
         {/* Search */}
-        <motion.div
+        <motion.form
+          onSubmit={handleSearch}
           variants={menuItem}
           className="
             hidden lg:flex items-center text-sm gap-2
@@ -108,11 +120,19 @@ const Navbar = () => {
         >
           <input
             type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-transparent outline-none text-gray-200 placeholder-gray-500"
             placeholder="Search Cars"
           />
-          <img src={assets.search_icon} alt="search" className="w-4 h-4 opacity-80" />
-        </motion.div>
+          <button type="submit">
+            <img
+              src={assets.search_icon}
+              alt="search"
+              className="w-4 h-4 opacity-80 cursor-pointer"
+            />
+          </button>
+        </motion.form>
 
         {/* Buttons */}
         <motion.div variants={menuItem} className="flex items-center gap-3 lg:gap-4">

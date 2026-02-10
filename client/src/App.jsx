@@ -24,6 +24,12 @@ import { Toaster } from 'react-hot-toast'
 import { useAppContext } from './context/AppContext'
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import About from "./pages/About";
+import Help from "./pages/Help";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import Insurance from "./pages/Insurance";
+import Cookies from "./pages/Cookies";
 
 const App = () => {
 
@@ -63,6 +69,14 @@ const App = () => {
 
         <Route path="/forgot-password" element={<ForgotPassword/>} />
         <Route path="/reset-password/:token" element={<ResetPassword/>} />
+
+
+        <Route path="/about" element={<About />} />
+        <Route path="/help" element={<Help />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/insurance" element={<Insurance />} />
+        <Route path="/cookies" element={<Cookies />} />
 
       </Routes>
 

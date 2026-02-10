@@ -103,9 +103,9 @@ const Footer = () => {
             </h2>
             <ul className="mt-4 flex flex-col gap-2 text-sm sm:text-base">
               <li><a href="#" className="hover:text-yellow-400 transition-all">Home</a></li>
-              <li><a href="#" className="hover:text-yellow-400 transition-all">Browse Cars</a></li>
-              <li><a href="#" className="hover:text-yellow-400 transition-all">List Your Car</a></li>
-              <li><a href="#" className="hover:text-yellow-400 transition-all">About Us</a></li>
+              <li><a href="/cars" className="hover:text-yellow-400 transition-all">Browse Cars</a></li>
+              <li><a href="/owner/add-car" className="hover:text-yellow-400 transition-all">List Your Car</a></li>
+              <li><a href="/about" className="hover:text-yellow-400 transition-all">About Us</a></li>
             </ul>
           </motion.div>
 
@@ -115,10 +115,10 @@ const Footer = () => {
               Resources
             </h2>
             <ul className="mt-4 flex flex-col gap-2 text-sm sm:text-base">
-              <li><a href="#" className="hover:text-yellow-400 transition-all">Help Center</a></li>
-              <li><a href="#" className="hover:text-yellow-400 transition-all">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-yellow-400 transition-all">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-yellow-400 transition-all">Insurance</a></li>
+              <li><a href="/help" className="hover:text-yellow-400 transition-all">Help Center</a></li>
+              <li><a href="/terms" className="hover:text-yellow-400 transition-all">Terms of Service</a></li>
+              <li><a href="/privacy" className="hover:text-yellow-400 transition-all">Privacy Policy</a></li>
+              <li><a href="/insurance" className="hover:text-yellow-400 transition-all">Insurance</a></li>
             </ul>
           </motion.div>
 
@@ -155,11 +155,11 @@ const Footer = () => {
           </p>
 
           <ul className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-            <li><a href="#" className="hover:text-yellow-400 transition-all">Privacy</a></li>
+            <li><a href="/privacy" className="hover:text-yellow-400 transition-all">Privacy</a></li>
             <span className="text-yellow-500/30 hidden sm:inline">|</span>
-            <li><a href="#" className="hover:text-yellow-400 transition-all">Terms</a></li>
+            <li><a href="/terms" className="hover:text-yellow-400 transition-all">Terms</a></li>
             <span className="text-yellow-500/30 hidden sm:inline">|</span>
-            <li><a href="#" className="hover:text-yellow-400 transition-all">Cookies</a></li>
+            <li><a href="/cookies" className="hover:text-yellow-400 transition-all">Cookies</a></li>
           </ul>
         </motion.div>
       </div>
