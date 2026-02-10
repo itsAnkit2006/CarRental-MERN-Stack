@@ -1,6 +1,7 @@
 import React from 'react'
 import { useAppContext } from '../context/AppContext';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
 
@@ -118,6 +119,24 @@ const Login = () => {
                         required
                     />
                 </div>
+
+            {state === "login" && (
+                <div className="flex -mt-2">
+                    <Link
+                        to="/forgot-password"
+                        onClick={() => setShowLogin(false)}
+                        className="
+                            text-xs sm:text-sm
+                            text-primary
+                            hover:text-yellow-300
+                            transition-all
+                            font-medium
+                        "
+                        >
+                        Forgot Password?
+                    </Link>
+                </div>
+            )}
 
                 {/* Switch */}
                 {state === "register" ? (

@@ -3,6 +3,13 @@ import { assets, cityList } from "../assets/assets";
 import { useAppContext } from "../context/AppContext";
 import { motion } from "motion/react";
 
+const getNextDay = (date) => {
+  const d = new Date(date);
+  d.setDate(d.getDate() + 1);
+  return d.toISOString().split("T")[0];
+};
+
+
 const Hero = () => {
   const [pickupLocation, setPickupLocation] = useState("");
 
@@ -184,6 +191,11 @@ const Hero = () => {
               value={returnDate}
               onChange={(e) => setReturnDate(e.target.value)}
               type="date"
+              min={
+                pickupDate
+                  ? getNextDay(pickupDate)
+                  : new Date().toISOString().split("T")[0]
+              }
               className="
                 w-full
                 text-sm text-gray-200

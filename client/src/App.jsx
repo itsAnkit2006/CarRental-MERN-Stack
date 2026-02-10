@@ -22,6 +22,8 @@ import Login from './components/Login'
 import AdminRegister from './pages/admin/AdminRegister'
 import { Toaster } from 'react-hot-toast'
 import { useAppContext } from './context/AppContext'
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 const App = () => {
 
@@ -58,6 +60,10 @@ const App = () => {
           <Route path="manage-cars"  element={<ManageCars />}/>
           <Route path="manage-bookings"  element={<ManageBookings />}/>
         </Route>
+
+        <Route path="/forgot-password" element={<ForgotPassword/>} />
+        <Route path="/reset-password/:token" element={<ResetPassword/>} />
+
       </Routes>
 
 

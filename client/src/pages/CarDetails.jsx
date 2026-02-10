@@ -6,6 +6,13 @@ import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
 import { motion } from 'motion/react'
 
+
+const getNextDay = (date) => {
+  const d = new Date(date);
+  d.setDate(d.getDate() + 1);
+  return d.toISOString().split("T")[0];
+};
+
 const CarDetails = () => {
 
   const { id } = useParams()
@@ -304,6 +311,11 @@ const CarDetails = () => {
             value={returnDate}
             onChange={(e) => setReturnDate(e.target.value)}
             type="date"
+            min={
+              pickupDate
+                ? getNextDay(pickupDate)
+                : new Date().toISOString().split("T")[0]
+            }
             required
             className="
               bg-white/5 border border-yellow-500/15
