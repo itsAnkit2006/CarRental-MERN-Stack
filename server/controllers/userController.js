@@ -76,7 +76,7 @@ export const getUserData = async (req, res) =>{
 export const getCars = async (req, res) => {
   try {
 
-    const cars = await Car.find();
+    const cars = await Car.find({ isAvailable: true })
 
     const carsWithAvailability = await Promise.all(
       cars.map(async (car) => {

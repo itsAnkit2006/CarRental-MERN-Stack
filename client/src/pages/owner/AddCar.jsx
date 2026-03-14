@@ -185,7 +185,7 @@ const AddCar = () => {
           label="Location"
           value={car.location}
           set={(v)=>setCar({...car,location:v})}
-          options={["New York","Los Angeles","Houston","Chicago"]}
+          options={['Ahemdabad', 'Surat', 'Vadodara', 'Rajkot', 'Bhavnagar', 'Jamnagar', 'Junagadh', 'Gandhinagar', 'Anand', 'Navsari', 'Morbi', 'Nadiad', 'Mehsana', 'Patan', 'Porbandar', 'Bhuj', 'Valsad', 'Vapi', 'Gondal', 'Veraval', 'Palanpur', 'Surendranagar', 'Dahod', 'Godhra', 'Bharuch']}
         />
 
 

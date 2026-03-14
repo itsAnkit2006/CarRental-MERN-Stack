@@ -38,11 +38,13 @@ const applyFilter = () => {
 const keyword = search || input
 
 if (!keyword && !categoryFilter && !transFilter) {
-  setFilteredCars(cars)
+  setFilteredCars(cars.filter(car => car.isAvailable))
   return
 }
 
 const filtered = cars.filter((car) => {
+
+  if (!car.isAvailable) return false
 
   const keywordMatch =
     !keyword ||

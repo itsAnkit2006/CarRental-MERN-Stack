@@ -36,12 +36,16 @@ const CarCard = ({ car }) => {
             absolute top-3 left-3 sm:top-4 sm:left-4
             px-2.5 py-1 sm:px-3 sm:py-1
             rounded-full text-[10px] sm:text-xs font-bold
-            ${car.availableFrom
+            ${!car.isAvailable
+              ? "bg-red-600 text-white"
+              : car.availableFrom
               ? "bg-yellow-500 text-black"
               : "bg-green-900 text-white"}
           `}
         >
-          {car.availableFrom
+          {!car.isAvailable
+            ? "Unavailable"
+            : car.availableFrom
             ? `Available after ${new Date(car.availableFrom).toLocaleDateString()}`
             : "Available Now"}
         </span>

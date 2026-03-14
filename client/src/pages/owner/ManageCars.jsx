@@ -25,7 +25,7 @@ const ManageCars = () => {
       const { data } = await axios.post('/api/owner/toggle-car', { carId })
       if (data.success) {
         toast.success(data.message)
-        fetchOwnerCars()
+        await fetchOwnerCars()
       } else {
         toast.error(data.message)
       }

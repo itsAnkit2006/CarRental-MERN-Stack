@@ -89,28 +89,30 @@ export const toggleCarAvailability = async (req, res)=>{
 }
 
 // API to Delete the car
-export const deleteCar = async (req, res)=>{
+export const deleteCar = async (req, res) => {
     try {
-        const {_id} = req.user;
-        const {carId} = req.body
-        const car = await Car.findById(carId)
+        const { _id } = req.user;
+        const { carId } = req.body;
 
-        // Checking is car belongs to the user
-        if(car.owner.toString() !== _id.toString()){
-            return res.json({success: false, message: "Unauthorized"});
+        const car = await Car.findById(carId);
+
+        if (!car) {
+            return res.json({ success: false, message: "Car not found" });
         }
 
-        car.owner = null;
-        car.isAvailable = false;
-        await car.save()
+        if (car.owner.toString() !== _id.toString()) {
+            return res.json({ success: false, message: "Unauthorized" });
+        }
 
+        await Car.findByIdAndDelete(carId);
 
-        res.json({success: true, message: "Car Removed"})
+        res.json({ success: true, message: "Car Deleted Successfully" });
+
     } catch (error) {
         console.log(error.message);
-        res.json({success: false, message: error.message})
+        res.json({ success: false, message: error.message });
     }
-}
+};
 
 // API to get Dashboard Data
 export const getDashboardData = async (req, res)=>{
