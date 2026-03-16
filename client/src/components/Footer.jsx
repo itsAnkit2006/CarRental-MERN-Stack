@@ -129,7 +129,7 @@ const Footer = () => {
             </h2>
             <ul className="mt-4 flex flex-col gap-2 text-sm sm:text-base text-gray-400">
               <li>1234 Luxury Drive</li>
-              <li>San Francisco, CA 94107</li>
+              <li>Memnagar lake</li>
               <li>+1 234 567 890</li>
               <li className="break-all">info@example.com</li>
             </ul>
