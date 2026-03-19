@@ -68,14 +68,23 @@ export const verifyUser = async (req, res) => {
   try {
     const { userId, status } = req.body;
 
-    if (!userId || !status) return res.json({ success: false, message: "userId and status required" });
+    if (!userId || !status)
+      return res.json({ success: false, message: "userId and status required" });
 
     const verification = await UserVerification.findOne({ user: userId });
-    if (!verification) return res.json({ success: false, message: "Verification not found" });
+    if (!verification)
+      return res.json({ success: false, message: "Verification not found" });
 
     verification.status = status;
     verification.verified_on = status === "verified" ? new Date() : null;
     await verification.save();
+
+    // 🔥🔥🔥 MAIN FIX
+    if (status === "verified") {
+      await User.findByIdAndUpdate(userId, { isVerified: true });
+    } else {
+      await User.findByIdAndUpdate(userId, { isVerified: false });
+    }
 
     await TransactionLog.create({
       action: "VERIFICATION_UPDATED",

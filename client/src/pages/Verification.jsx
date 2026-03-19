@@ -3,11 +3,16 @@ import { motion } from "motion/react";
 import toast from "react-hot-toast";
 import { useAppContext } from "../context/AppContext";
 import Title from "../components/Title";
+import { Navigate } from "react-router-dom";
 
 const Verification = () => {
 
   const fileRef = useRef(null);
   const { axios, user, fetchUser } = useAppContext();
+
+  if (user?.isVerified) {
+    return <Navigate to="/owner" />;
+  }
 
   const [status, setStatus] = useState("checking");
   const [idType, setIdType] = useState("Aadhar");

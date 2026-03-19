@@ -7,9 +7,29 @@ import { motion, AnimatePresence } from "motion/react";
 
 const Navbar = () => {
 
+  const handleListCarsClick = async () => {
+  if (!user) {
+    setShowLogin(true);
+    return;
+  }
+
+  const { data } = await axios.get("/api/user/data");
+
+  if (!data.user.isVerified) {
+    navigate("/verification");
+    return;
+  }
+
+  if (!isOwner) {
+    await changeRole();
+  }
+
+  navigate("/owner");
+};
+
   const [search, setSearch] = useState("");
 
-  const { setShowLogin, user, logout, isOwner, axios, setIsOwner } = useAppContext();
+  const { setShowLogin, user, logout, isOwner, axios, setIsOwner, fetchUser } = useAppContext();
 
   const location = useLocation();
   const [open, setOpen] = useState(false);
@@ -139,7 +159,7 @@ const Navbar = () => {
           <motion.button
             whileHover={{ y: -1 }}
             whileTap={{ scale: 0.97 }}
-            onClick={() => (isOwner ? navigate("/owner") : changeRole())}
+            onClick={handleListCarsClick}
             className="
               text-gray-300 font-medium tracking-wide
               hover:text-yellow-400 transition-all duration-200
@@ -213,7 +233,7 @@ const Navbar = () => {
 
               <motion.div variants={menuItem} className="flex flex-col gap-4 mt-4">
                 <button
-                  onClick={() => (isOwner ? navigate("/owner") : changeRole())}
+                  onClick={handleListCarsClick}
                   className="text-gray-200 font-semibold hover:text-yellow-400 transition-all text-left"
                 >
                   {isOwner ? "Dashboard" : "List cars"}

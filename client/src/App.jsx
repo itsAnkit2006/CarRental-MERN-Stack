@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Navbar from './components/Navbar'
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
 import CarDetails from './pages/CarDetails'
 import Cars from './pages/Cars'
@@ -33,7 +33,7 @@ import Cookies from "./pages/Cookies";
 
 const App = () => {
 
-  const {showLogin} = useAppContext()
+  const {showLogin, user} = useAppContext()
   const path = useLocation().pathname
   const isDashboardPath = path.startsWith('/owner') || path.startsWith('/admin')
 
@@ -50,7 +50,7 @@ const App = () => {
         <Route path='/car-details/:id' element={<CarDetails/>} />
         <Route path='/cars' element={<Cars/>} />
         <Route path='/my-bookings' element={<MyBookings/>} />
-        <Route path='/verification' element={<Verification/>} />
+        <Route path='/verification' element={!user?.isVerified ? <Verification/> : <Navigate to="/owner" />} />
 
         <Route path='/admin-register' element={<AdminRegister/>} />
         <Route path='/admin-login' element={<AdminLogin/>} />
@@ -60,7 +60,7 @@ const App = () => {
           <Route path='payments' element={<AdminPayments />} />
           <Route path='feedback' element={<AdminFeedback />} />
         </Route>
-        <Route path='/owner' element={<Layout />}>
+        <Route path='/owner' element={user?.isVerified ? <Layout /> : <Navigate to="/verification" />}>
           <Route index  element={<Dashboard />}/>
           <Route path="add-car"  element={<AddCar />}/>
           <Route path="manage-cars"  element={<ManageCars />}/>
