@@ -12,10 +12,18 @@ const Login = () => {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+    const [confirmPassword, setConfirmPassword] = React.useState("");
+
     const onSubmitHandler = async (event) => {
         try {
             event.preventDefault();
             const { data } = await axios.post(`/api/user/${state}`, { name, email, password })
+
+            if (state === "register" && password !== confirmPassword) {
+                return toast.error("Passwords do not match");
+            }
 
             if (data.success) {
                 navigate('/')
@@ -103,22 +111,91 @@ const Login = () => {
 
                 {/* Password */}
                 <div className="w-full">
-                    <p className="text-sm text-gray-300 font-semibold">Password</p>
-                    <input
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                        placeholder="Enter your password"
-                        className="
-                            w-full px-4 py-3 mt-2 rounded-xl outline-none
-                            bg-black/30 border border-yellow-500/15
-                            text-sm sm:text-base
-                            text-gray-200 placeholder-gray-500
-                            focus:border-yellow-400 transition-all
-                        "
-                        type="password"
-                        required
-                    />
-                </div>
+  <p className="text-sm text-gray-300 font-semibold">Password</p>
+
+  <div className="relative">
+    <input
+      onChange={(e) => setPassword(e.target.value)}
+      value={password}
+      placeholder="Enter your password"
+      className="
+        w-full px-4 py-3 mt-2 rounded-xl outline-none
+        bg-black/30 border border-yellow-500/15
+        text-sm sm:text-base
+        text-gray-200 placeholder-gray-500
+        focus:border-yellow-400 transition-all
+        pr-10
+      "
+      type={showPassword ? "text" : "password"}
+      required
+    />
+
+    {/* 👁️ SVG Eye Icon */}
+    <button
+      type="button"
+      onClick={() => setShowPassword(!showPassword)}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-yellow-400"
+    >
+      {showPassword ? (
+        // Eye OFF
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+            d="M13.875 18.825A10.05 10.05 0 0112 19c-5 0-9-7-9-7a17.02 17.02 0 013.69-4.95M6.1 6.1A9.97 9.97 0 0112 5c5 0 9 7 9 7a17.05 17.05 0 01-4.35 5.15M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 6L3 3" />
+        </svg>
+      ) : (
+        // Eye ON
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm2.458 2.458A9.97 9.97 0 0021 12s-4-7-9-7-9 7-9 7a9.97 9.97 0 003.542 2.458M9.88 9.88a3 3 0 104.24 4.24" />
+        </svg>
+      )}
+    </button>
+  </div>
+</div>
+
+{state === "register" && (
+  <div className="w-full">
+    <p className="text-sm text-gray-300 font-semibold">Confirm Password</p>
+
+    <div className="relative">
+      <input
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        value={confirmPassword}
+        placeholder="Re-enter password"
+        className="
+          w-full px-4 py-3 mt-2 rounded-xl outline-none
+          bg-black/30 border border-yellow-500/15
+          text-sm sm:text-base
+          text-gray-200 placeholder-gray-500
+          focus:border-yellow-400 transition-all
+          pr-10
+        "
+        type={showConfirmPassword ? "text" : "password"} // ✅ FIX
+        required
+      />
+
+      <button
+        type="button"
+        onClick={() => setShowConfirmPassword(!showConfirmPassword)} // ✅ FIX
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-yellow-400"
+      >
+        {showConfirmPassword ? ( // ✅ FIX
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+              d="M13.875 18.825A10.05 10.05 0 0112 19c-5 0-9-7-9-7a17.02 17.02 0 013.69-4.95M6.1 6.1A9.97 9.97 0 0112 5c5 0 9 7 9 7a17.05 17.05 0 01-4.35 5.15M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 6L3 3" />
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm2.458 2.458A9.97 9.97 0 0021 12s-4-7-9-7-9 7-9 7a9.97 9.97 0 003.542 2.458M9.88 9.88a3 3 0 104.24 4.24" />
+          </svg>
+        )}
+      </button>
+    </div>
+  </div>
+)}
+
+
 
             {state === "login" && (
                 <div className="flex -mt-2">

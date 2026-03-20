@@ -13,6 +13,7 @@ const { axios, user, currency } = useAppContext()
 const [bookings, setBookings] = useState([])
 const [openFeedback, setOpenFeedback] = useState(false)
 const [selectedBooking, setSelectedBooking] = useState(null)
+const [cancelLoadingId, setCancelLoadingId] = useState(null)
 
 const [openPayment, setOpenPayment] = useState(false)
 const [selectedPaymentBooking, setSelectedPaymentBooking] = useState(null)
@@ -71,6 +72,26 @@ const handlePayNow = async () => {
   }
 }
 
+const handleCancelBooking = async (bookingId) => {
+  try {
+    setCancelLoadingId(bookingId)
+
+    const { data } = await axios.put(`/api/bookings/cancel/${bookingId}`)
+
+    if (data.success) {
+      toast.success("Booking cancelled ❌")
+      await fetchMyBookings()
+    } else {
+      toast.error(data.message)
+    }
+
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Cancel failed")
+  } finally {
+    setCancelLoadingId(null)
+  }
+}
+
 useEffect(() => {
   user && fetchMyBookings()
 }, [user])
@@ -126,7 +147,12 @@ return (
               className="w-full h-full object-cover group-hover:scale-105 transition"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent" />
-            <span className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold bg-black/70 backdrop-blur">
+            <span className={`
+              absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold backdrop-blur
+              ${booking.status === "pending" && "bg-yellow-500/20 text-yellow-300"}
+              ${booking.status === "approved" && "bg-green-500/20 text-green-300"}
+              ${booking.status === "cancelled" && "bg-red-500/20 text-red-300"}
+              `}>
               {booking.status}
             </span>
           </div>
@@ -153,21 +179,40 @@ return (
 
             <div className="flex flex-wrap gap-3 mt-3">
 
-              <button
-                onClick={() => openPaymentModal(booking)}
-                className="px-4 py-2 rounded-xl bg-yellow-400 text-black font-semibold"
-              >
-                Payment
-              </button>
+  {/* PAYMENT */}
+  <button
+    onClick={() => openPaymentModal(booking)}
+    className="px-4 py-2 rounded-xl bg-yellow-400 text-black font-semibold"
+  >
+    Payment
+  </button>
 
-              <button
-                onClick={() => { setSelectedBooking(booking); setOpenFeedback(true); }}
-                className="px-4 py-2 rounded-xl bg-white/5 border border-white/10"
-              >
-                Feedback
-              </button>
+  {/* FEEDBACK */}
+  <button
+    onClick={() => { setSelectedBooking(booking); setOpenFeedback(true); }}
+    className="px-4 py-2 rounded-xl bg-white/5 border border-white/10"
+  >
+    Feedback
+  </button>
 
-            </div>
+  {/* CANCEL BUTTON */}
+  {booking.status === "pending" && (
+    <button
+      onClick={() => handleCancelBooking(booking._id)}
+      disabled={cancelLoadingId === booking._id}
+      className="
+        px-4 py-2 rounded-xl
+        bg-red-500/90 hover:bg-red-500
+        text-white font-semibold
+        disabled:opacity-50
+        transition
+      "
+    >
+      {cancelLoadingId === booking._id ? "Cancelling..." : "Cancel"}
+    </button>
+  )}
+
+</div>
           </div>
 
           {/* PRICE */}

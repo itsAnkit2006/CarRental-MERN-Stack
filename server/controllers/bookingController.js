@@ -177,3 +177,35 @@ export const changeBookingStatus = async (req, res)=>{
         res.json({success: false, message: error.message})
     }
 }
+
+export const cancelBooking = async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const userId = req.user.id;
+
+    const booking = await Booking.findById(bookingId);
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    // 🔒 Ownership check
+    if (booking.user.toString() !== userId) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    // ❌ Prevent cancel if already approved
+    if (booking.status !== "pending") {
+      return res.status(400).json({
+        message: "You cannot cancel this booking after approval",
+      });
+    }
+
+    booking.status = "cancelled";
+    await booking.save();
+
+    res.json({ message: "Booking cancelled successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
