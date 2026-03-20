@@ -179,23 +179,28 @@ return (
 
             <div className="flex flex-wrap gap-3 mt-3">
 
-  {/* PAYMENT */}
-  <button
-    onClick={() => openPaymentModal(booking)}
-    className="px-4 py-2 rounded-xl bg-yellow-400 text-black font-semibold"
-  >
-    Payment
-  </button>
+  {/* ONLY SHOW IF NOT CANCELLED */}
+  {booking.status !== "cancelled" && (
+    <>
+      {/* PAYMENT */}
+      <button
+        onClick={() => openPaymentModal(booking)}
+        className="px-4 py-2 rounded-xl bg-yellow-400 text-black font-semibold"
+      >
+        Payment
+      </button>
 
-  {/* FEEDBACK */}
-  <button
-    onClick={() => { setSelectedBooking(booking); setOpenFeedback(true); }}
-    className="px-4 py-2 rounded-xl bg-white/5 border border-white/10"
-  >
-    Feedback
-  </button>
+      {/* FEEDBACK */}
+      <button
+        onClick={() => { setSelectedBooking(booking); setOpenFeedback(true); }}
+        className="px-4 py-2 rounded-xl bg-white/5 border border-white/10"
+      >
+        Feedback
+      </button>
+    </>
+  )}
 
-  {/* CANCEL BUTTON */}
+  {/* CANCEL BUTTON (ONLY PENDING) */}
   {booking.status === "pending" && (
     <button
       onClick={() => handleCancelBooking(booking._id)}
