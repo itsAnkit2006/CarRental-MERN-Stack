@@ -22,7 +22,6 @@ const Banner = () => {
 
   const { token, user, navigate, setShowLogin } = useAppContext();
 
-
   const handleListCar = () => {
     // Not logged in
     if (!token) {

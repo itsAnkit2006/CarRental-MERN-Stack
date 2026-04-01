@@ -22,18 +22,23 @@ export const payBooking = async (req, res) => {
     const { bookingId, paymentMethod } = req.body;
 
     if (!bookingId || !paymentMethod) {
-      return res.json({ success: false, message: "bookingId and paymentMethod required" });
+      return res.json({
+        success: false,
+        message: "bookingId and paymentMethod required",
+      });
     }
 
     const booking = await Booking.findById(bookingId);
-    if (!booking) return res.json({ success: false, message: "Booking not found" });
+    if (!booking)
+      return res.json({ success: false, message: "Booking not found" });
 
     if (booking.user.toString() !== req.user._id.toString()) {
       return res.json({ success: false, message: "Unauthorized" });
     }
 
     const payment = await Payment.findOne({ booking: bookingId });
-    if (!payment) return res.json({ success: false, message: "Payment record not found" });
+    if (!payment)
+      return res.json({ success: false, message: "Payment record not found" });
 
     payment.paymentMethod = paymentMethod;
     payment.status = "SUCCESS";
@@ -62,10 +67,15 @@ export const getPaymentByBooking = async (req, res) => {
   try {
     const { bookingId } = req.params;
 
-    const payment = await Payment.findOne({ booking: bookingId }).populate("booking");
+    const payment = await Payment.findOne({ booking: bookingId }).populate(
+      "booking",
+    );
 
     if (!payment) {
-      return res.json({ success: false, message: "Payment not found for this booking" });
+      return res.json({
+        success: false,
+        message: "Payment not found for this booking",
+      });
     }
 
     // security: only booking owner can view
@@ -79,4 +89,3 @@ export const getPaymentByBooking = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
-

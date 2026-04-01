@@ -70,7 +70,8 @@ const Newsletter = () => {
             leading-relaxed max-w-xl
           "
         >
-          Subscribe to get the latest offers, new arrivals, and exclusive discounts.
+          Subscribe to get the latest offers, new arrivals, and exclusive
+          discounts.
         </motion.p>
 
         {/* Form */}

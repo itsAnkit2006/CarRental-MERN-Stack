@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const Payments = () => {
-
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +23,6 @@ const Payments = () => {
       } else {
         toast.error(data.message);
       }
-
     } catch (e) {
       toast.error(e.message);
     } finally {
@@ -46,7 +44,6 @@ const Payments = () => {
         relative overflow-hidden
       "
     >
-
       {/* Glow */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-yellow-500/10 blur-[150px] rounded-full pointer-events-none" />
 
@@ -63,21 +60,18 @@ const Payments = () => {
 
       {/* Content */}
       {loading ? (
-        <div className="mt-10 text-gray-400">
-          Loading payments...
-        </div>
+        <div className="mt-10 text-gray-400">Loading payments...</div>
       ) : (
         <div className="relative z-10 mt-10 space-y-5">
-
           {/* EMPTY */}
           {items.length === 0 && (
-            <div className="
+            <div
+              className="
               rounded-3xl p-8 text-center
               bg-white/5 border border-yellow-500/15
-            ">
-              <p className="text-gray-400">
-                No payments found
-              </p>
+            "
+            >
+              <p className="text-gray-400">No payments found</p>
             </div>
           )}
 
@@ -94,19 +88,15 @@ const Payments = () => {
                 transition-all duration-300
               "
             >
-
               <div className="flex flex-col md:flex-row md:justify-between gap-4">
-
                 {/* LEFT */}
                 <div>
-
                   <p className="text-gray-200 font-semibold">
-                    {p.user?.name || "User"} • {p.booking?._id?.slice(-6) || "Booking"}
+                    {p.user?.name || "User"} •{" "}
+                    {p.booking?._id?.slice(-6) || "Booking"}
                   </p>
 
-                  <p className="text-sm text-gray-500">
-                    {p.user?.email}
-                  </p>
+                  <p className="text-sm text-gray-500">{p.user?.email}</p>
 
                   <p className="text-sm text-gray-400 mt-3">
                     Amount:
@@ -119,14 +109,15 @@ const Payments = () => {
                   <span
                     className={`
                       inline-block mt-2 px-3 py-1 rounded-full text-xs font-bold uppercase border
-                      ${p.status === "SUCCESS"
-                        ? "bg-green-500/10 text-green-400 border-green-500/20"
-                        : "bg-yellow-500/10 text-yellow-300 border-yellow-500/20"}
+                      ${
+                        p.status === "SUCCESS"
+                          ? "bg-green-500/10 text-green-400 border-green-500/20"
+                          : "bg-yellow-500/10 text-yellow-300 border-yellow-500/20"
+                      }
                     `}
                   >
                     {p.status}
                   </span>
-
                 </div>
 
                 {/* RIGHT */}
@@ -136,12 +127,9 @@ const Payments = () => {
                     Created: {String(p.createdAt).split("T")[0]}
                   </p>
                 </div>
-
               </div>
-
             </div>
           ))}
-
         </div>
       )}
     </div>

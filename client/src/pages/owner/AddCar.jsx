@@ -1,90 +1,89 @@
-import React, { useState } from 'react'
-import Title from '../../components/owner/Title'
-import { assets } from '../../assets/assets'
-import { useAppContext } from '../../context/AppContext'
-import toast from 'react-hot-toast'
+import React, { useState } from "react";
+import Title from "../../components/owner/Title";
+import { assets } from "../../assets/assets";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const AddCar = () => {
+  const { axios, currency } = useAppContext();
 
-  const { axios, currency } = useAppContext()
-
-  const [images, setImages] = useState([])
+  const [images, setImages] = useState([]);
 
   const [car, setCar] = useState({
-    brand: '',
-    model: '',
+    brand: "",
+    model: "",
     year: 0,
     pricePerDay: 0,
-    category: '',
-    transmission: '',
-    fuel_type: '',
+    category: "",
+    transmission: "",
+    fuel_type: "",
     seating_capacity: 0,
-    location: '',
-    description: '',
-  })
+    location: "",
+    description: "",
+  });
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmitHandler = async (e) => {
-    e.preventDefault()
-    if (isLoading) return
+    e.preventDefault();
+    if (isLoading) return;
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-      
       if (images.length === 0) {
-        setIsLoading(false)
-        return toast.error("Please upload at least one image")
+        setIsLoading(false);
+        return toast.error("Please upload at least one image");
       }
-      
+
       if (images.length > 5) {
-        setIsLoading(false)
-        return toast.error("Maximum 5 images allowed")
+        setIsLoading(false);
+        return toast.error("Maximum 5 images allowed");
       }
-      
-      const formData = new FormData()
+
+      const formData = new FormData();
 
       images.forEach((img) => {
-        formData.append('images', img)
-      })
-      formData.append('carData', JSON.stringify(car))
+        formData.append("images", img);
+      });
+      formData.append("carData", JSON.stringify(car));
 
-      const { data } = await axios.post('/api/owner/add-car', formData)
+      const { data } = await axios.post("/api/owner/add-car", formData);
 
       if (data.success) {
-        toast.success(data.message)
-        setImages([])
+        toast.success(data.message);
+        setImages([]);
         setCar({
-          brand: '',
-          model: '',
+          brand: "",
+          model: "",
           year: 0,
           pricePerDay: 0,
-          category: '',
-          transmission: '',
-          fuel_type: '',
+          category: "",
+          transmission: "",
+          fuel_type: "",
           seating_capacity: 0,
-          location: '',
-          description: '',
-        })
+          location: "",
+          description: "",
+        });
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="
+    <div
+      className="
       flex-1 min-h-screen
       bg-[#111111] text-white
       px-4 sm:px-6 md:px-10 lg:px-14
       py-8 sm:py-10
-    ">
-
+    "
+    >
       <Title
         title="Add New Car"
         subTitle="Fill in details to list a new car for booking, including pricing, availability and car specifications."
@@ -98,7 +97,6 @@ const AddCar = () => {
           max-w-3xl
         "
       >
-
         {/* IMAGE */}
         <div className="flex items-center gap-4">
           <label htmlFor="car-image" className="cursor-pointer">
@@ -141,7 +139,7 @@ const AddCar = () => {
 
         {/* BRAND MODEL */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-          {["brand","model"].map(field => (
+          {["brand", "model"].map((field) => (
             <div key={field} className="flex flex-col gap-2">
               <label className="text-gray-300 font-semibold capitalize">
                 {field}
@@ -151,7 +149,7 @@ const AddCar = () => {
                 type="text"
                 className="px-4 py-3 rounded-xl bg-white/5 border border-yellow-500/15 text-gray-200 focus:border-yellow-400"
                 value={car[field]}
-                onChange={(e)=>setCar({...car,[field]:e.target.value})}
+                onChange={(e) => setCar({ ...car, [field]: e.target.value })}
               />
             </div>
           ))}
@@ -162,54 +160,77 @@ const AddCar = () => {
           <InputField
             label="Year"
             value={car.year}
-            set={(v)=>setCar({...car,year:v})}
+            set={(v) => setCar({ ...car, year: v })}
           />
           <InputField
             label={`Daily Price (${currency})`}
             value={car.pricePerDay}
-            set={(v)=>setCar({...car,pricePerDay:v})}
+            set={(v) => setCar({ ...car, pricePerDay: v })}
           />
           <SelectField
             label="Category"
             value={car.category}
-            set={(v)=>setCar({...car,category:v})}
-            options={["Sedan","SUV","Van"]}
+            set={(v) => setCar({ ...car, category: v })}
+            options={["Sedan", "SUV", "Van"]}
           />
         </div>
 
         {/* TRANSMISSION FUEL SEATING */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
           <SelectField
             label="Transmission"
             value={car.transmission}
-            set={(v)=>setCar({...car,transmission:v})}
-            options={["Automatic","Manual","Semi-Automatic"]}
+            set={(v) => setCar({ ...car, transmission: v })}
+            options={["Automatic", "Manual", "Semi-Automatic"]}
           />
 
           <SelectField
             label="Fuel Type"
             value={car.fuel_type}
-            set={(v)=>setCar({...car,fuel_type:v})}
-            options={["Gas","Diesel","Petrol","Electric","Hybrid"]}
+            set={(v) => setCar({ ...car, fuel_type: v })}
+            options={["Gas", "Diesel", "Petrol", "Electric", "Hybrid"]}
           />
 
           <InputField
             label="Seating Capacity"
             value={car.seating_capacity}
-            set={(v)=>setCar({...car,seating_capacity:v})}
+            set={(v) => setCar({ ...car, seating_capacity: v })}
           />
         </div>
-
 
         {/* LOCATION */}
         <SelectField
           label="Location"
           value={car.location}
-          set={(v)=>setCar({...car,location:v})}
-          options={['Ahemdabad', 'Surat', 'Vadodara', 'Rajkot', 'Bhavnagar', 'Jamnagar', 'Junagadh', 'Gandhinagar', 'Anand', 'Navsari', 'Morbi', 'Nadiad', 'Mehsana', 'Patan', 'Porbandar', 'Bhuj', 'Valsad', 'Vapi', 'Gondal', 'Veraval', 'Palanpur', 'Surendranagar', 'Dahod', 'Godhra', 'Bharuch']}
+          set={(v) => setCar({ ...car, location: v })}
+          options={[
+            "Ahemdabad",
+            "Surat",
+            "Vadodara",
+            "Rajkot",
+            "Bhavnagar",
+            "Jamnagar",
+            "Junagadh",
+            "Gandhinagar",
+            "Anand",
+            "Navsari",
+            "Morbi",
+            "Nadiad",
+            "Mehsana",
+            "Patan",
+            "Porbandar",
+            "Bhuj",
+            "Valsad",
+            "Vapi",
+            "Gondal",
+            "Veraval",
+            "Palanpur",
+            "Surendranagar",
+            "Dahod",
+            "Godhra",
+            "Bharuch",
+          ]}
         />
-
 
         {/* DESCRIPTION */}
         <div className="flex flex-col gap-2">
@@ -219,7 +240,7 @@ const AddCar = () => {
             required
             className="px-4 py-3 rounded-2xl bg-white/5 border border-yellow-500/15 text-gray-200 resize-none focus:border-yellow-400"
             value={car.description}
-            onChange={(e)=>setCar({...car,description:e.target.value})}
+            onChange={(e) => setCar({ ...car, description: e.target.value })}
           />
         </div>
 
@@ -235,15 +256,14 @@ const AddCar = () => {
           "
         >
           <img src={assets.tick_icon} alt="" className="w-4 h-4" />
-          {isLoading ? 'Listing...' : 'List Your Car'}
+          {isLoading ? "Listing..." : "List Your Car"}
         </button>
-
       </form>
     </div>
-  )
-}
+  );
+};
 
-/* ---------- Small Helpers (UI only) ---------- */
+/* ---------- Small Helpers ---------- */
 
 const InputField = ({ label, value, set }) => (
   <div className="flex flex-col gap-2">
@@ -256,7 +276,7 @@ const InputField = ({ label, value, set }) => (
       onChange={(e) => set && set(e.target.value)}
     />
   </div>
-)
+);
 
 const SelectField = ({ label, value, set, options = [] }) => (
   <div className="flex flex-col gap-2">
@@ -268,12 +288,13 @@ const SelectField = ({ label, value, set, options = [] }) => (
       className="px-4 py-3 rounded-xl bg-[#0B0B0B] border border-yellow-500/15 text-gray-200 focus:border-yellow-400"
     >
       <option value="">Select</option>
-      {options.map(o => (
-        <option key={o} value={o}>{o}</option>
+      {options.map((o) => (
+        <option key={o} value={o}>
+          {o}
+        </option>
       ))}
     </select>
   </div>
-)
+);
 
-
-export default AddCar
+export default AddCar;

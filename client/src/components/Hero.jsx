@@ -9,7 +9,6 @@ const getNextDay = (date) => {
   return d.toISOString().split("T")[0];
 };
 
-
 const Hero = () => {
   const [pickupLocation, setPickupLocation] = useState("");
 
@@ -20,7 +19,7 @@ const Hero = () => {
     e.preventDefault();
 
     navigate(
-      `/cars?pickupLocation=${pickupLocation}&pickupDate=${pickupDate}&returnDate=${returnDate}`
+      `/cars?pickupLocation=${pickupLocation}&pickupDate=${pickupDate}&returnDate=${returnDate}`,
     );
   };
 
@@ -59,21 +58,25 @@ const Hero = () => {
     >
       {/* Background glow */}
       <motion.div className="absolute inset-0 pointer-events-none">
-        <div className="
+        <div
+          className="
           absolute top-[-150px] left-1/2 -translate-x-1/2
           w-[500px] h-[500px]
           sm:w-[700px] sm:h-[700px]
           lg:w-[900px] lg:h-[900px]
           bg-yellow-500/10 blur-[160px] rounded-full
-        "/>
+        "
+        />
 
-        <div className="
+        <div
+          className="
           absolute bottom-[-200px] right-[-120px]
           w-[350px] h-[350px]
           sm:w-[500px] sm:h-[500px]
           lg:w-[600px] lg:h-[600px]
           bg-yellow-500/10 blur-[160px] rounded-full
-        "/>
+        "
+        />
       </motion.div>
 
       {/* Title */}
@@ -105,7 +108,8 @@ const Hero = () => {
           relative z-10
         "
       >
-        Book premium cars in seconds. Choose location, pick dates, and drive in style.
+        Book premium cars in seconds. Choose location, pick dates, and drive in
+        style.
       </motion.p>
 
       {/* Search Form */}
@@ -128,7 +132,6 @@ const Hero = () => {
       >
         {/* Inputs Container */}
         <div className="flex flex-col lg:flex-row gap-5 lg:gap-10 w-full">
-
           {/* Location */}
           <div className="flex flex-col gap-2 w-full">
             <label className="text-sm text-gray-300 font-medium">

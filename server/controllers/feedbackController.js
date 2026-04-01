@@ -13,7 +13,8 @@ export const addFeedback = async (req, res) => {
     // If booking provided, verify ownership
     if (booking) {
       const bookingData = await Booking.findById(booking);
-      if (!bookingData) return res.json({ success: false, message: "Booking not found" });
+      if (!bookingData)
+        return res.json({ success: false, message: "Booking not found" });
 
       if (bookingData.user.toString() !== req.user._id.toString()) {
         return res.json({ success: false, message: "Unauthorized" });

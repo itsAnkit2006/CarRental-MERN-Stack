@@ -9,16 +9,18 @@ export const submitVerification = async (req, res) => {
     const { id_type, id_number } = req.body;
 
     if (!id_type || !id_number) {
-      return res.json({ success: false, message: "id_type and id_number required" });
+      return res.json({
+        success: false,
+        message: "id_type and id_number required",
+      });
     }
 
     if (!req.file) {
       return res.json({
-        success:false,
-        message:"Document image required"
+        success: false,
+        message: "Document image required",
       });
     }
-
 
     let documentImage = "";
 
@@ -32,7 +34,11 @@ export const submitVerification = async (req, res) => {
 
       documentImage = imagekit.url({
         path: response.filePath,
-        transformation: [{ width: "800" }, { quality: "auto" }, { format: "webp" }],
+        transformation: [
+          { width: "800" },
+          { quality: "auto" },
+          { format: "webp" },
+        ],
       });
     }
 
@@ -46,7 +52,7 @@ export const submitVerification = async (req, res) => {
         status: "pending",
         verified_on: null,
       },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
 
     await TransactionLog.create({
@@ -55,7 +61,11 @@ export const submitVerification = async (req, res) => {
       message: `User submitted verification: ${id_type}`,
     });
 
-    res.json({ success: true, message: "Verification submitted", verification });
+    res.json({
+      success: true,
+      message: "Verification submitted",
+      verification,
+    });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });

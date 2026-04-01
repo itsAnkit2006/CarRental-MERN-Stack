@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const AdminDashboard = () => {
-
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +23,6 @@ const AdminDashboard = () => {
       } else {
         toast.error(data.message);
       }
-
     } catch (e) {
       toast.error(e.message);
     } finally {
@@ -53,7 +51,6 @@ const AdminDashboard = () => {
         relative overflow-hidden
       "
     >
-
       {/* Glow */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-yellow-500/10 blur-[150px] rounded-full pointer-events-none" />
 
@@ -70,9 +67,7 @@ const AdminDashboard = () => {
 
       {/* Content */}
       {loading ? (
-        <div className="mt-10 text-gray-400">
-          Loading statistics...
-        </div>
+        <div className="mt-10 text-gray-400">Loading statistics...</div>
       ) : (
         <div
           className="

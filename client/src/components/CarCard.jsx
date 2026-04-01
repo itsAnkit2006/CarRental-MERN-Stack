@@ -1,16 +1,16 @@
-import React from 'react'
-import { assets } from '../assets/assets'
-import { useNavigate } from 'react-router-dom'
+import React from "react";
+import { assets } from "../assets/assets";
+import { useNavigate } from "react-router-dom";
 
 const CarCard = ({ car }) => {
-  const currency = import.meta.env.VITE_CURRENCY
-  const navigate = useNavigate()
+  const currency = import.meta.env.VITE_CURRENCY;
+  const navigate = useNavigate();
 
   return (
     <div
       onClick={() => {
-        navigate(`/car-details/${car._id}`)
-        scrollTo(0, 0)
+        navigate(`/car-details/${car._id}`);
+        scrollTo(0, 0);
       }}
       className="
         group rounded-2xl overflow-hidden cursor-pointer
@@ -36,18 +36,20 @@ const CarCard = ({ car }) => {
             absolute top-3 left-3 sm:top-4 sm:left-4
             px-2.5 py-1 sm:px-3 sm:py-1
             rounded-full text-[10px] sm:text-xs font-bold
-            ${!car.isAvailable
-              ? "bg-red-600 text-white"
-              : car.availableFrom
-              ? "bg-yellow-500 text-black"
-              : "bg-green-900 text-white"}
+            ${
+              !car.isAvailable
+                ? "bg-red-600 text-white"
+                : car.availableFrom
+                  ? "bg-yellow-500 text-black"
+                  : "bg-green-900 text-white"
+            }
           `}
         >
           {!car.isAvailable
             ? "Unavailable"
             : car.availableFrom
-            ? `Available after ${new Date(car.availableFrom).toLocaleDateString()}`
-            : "Available Now"}
+              ? `Available after ${new Date(car.availableFrom).toLocaleDateString()}`
+              : "Available Now"}
         </span>
 
         {/* Price */}
@@ -61,7 +63,8 @@ const CarCard = ({ car }) => {
           "
         >
           <span className="font-bold text-primary">
-            {currency}{car.pricePerDay}
+            {currency}
+            {car.pricePerDay}
           </span>
           <span className="text-xs sm:text-sm text-gray-300"> / day</span>
         </div>
@@ -84,28 +87,44 @@ const CarCard = ({ car }) => {
         {/* Specs */}
         <div className="mt-4 sm:mt-5 grid grid-cols-2 gap-y-3 text-gray-300">
           <div className="flex items-center text-xs sm:text-sm">
-            <img src={assets.users_icon} alt="" className="h-4 w-4 mr-2 opacity-80" />
+            <img
+              src={assets.users_icon}
+              alt=""
+              className="h-4 w-4 mr-2 opacity-80"
+            />
             <span>{car.seating_capacity} Seats</span>
           </div>
 
           <div className="flex items-center text-xs sm:text-sm">
-            <img src={assets.fuel_icon} alt="" className="h-4 w-4 mr-2 opacity-80" />
+            <img
+              src={assets.fuel_icon}
+              alt=""
+              className="h-4 w-4 mr-2 opacity-80"
+            />
             <span className="truncate">{car.fuel_type}</span>
           </div>
 
           <div className="flex items-center text-xs sm:text-sm">
-            <img src={assets.car_icon} alt="" className="h-4 w-4 mr-2 opacity-80" />
+            <img
+              src={assets.car_icon}
+              alt=""
+              className="h-4 w-4 mr-2 opacity-80"
+            />
             <span className="truncate">{car.transmission}</span>
           </div>
 
           <div className="flex items-center text-xs sm:text-sm min-w-0">
-            <img src={assets.location_icon} alt="" className="h-4 w-4 mr-2 opacity-80" />
+            <img
+              src={assets.location_icon}
+              alt=""
+              className="h-4 w-4 mr-2 opacity-80"
+            />
             <span className="truncate">{car.location}</span>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CarCard
+export default CarCard;

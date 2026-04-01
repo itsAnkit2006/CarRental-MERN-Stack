@@ -36,7 +36,6 @@ const AdminRegister = () => {
       } else {
         toast.error(data.message);
       }
-
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -53,7 +52,6 @@ const AdminRegister = () => {
         relative overflow-hidden
       "
     >
-
       {/* Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-yellow-500/10 blur-[160px] rounded-full pointer-events-none" />
 
@@ -71,7 +69,6 @@ const AdminRegister = () => {
           shadow-[0px_14px_40px_rgba(0,0,0,0.60)]
         "
       >
-
         {/* Header */}
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
           Admin Register
@@ -83,7 +80,6 @@ const AdminRegister = () => {
 
         {/* Form */}
         <form onSubmit={submit} className="mt-7 space-y-4">
-
           <input
             required
             autoFocus
@@ -186,7 +182,6 @@ const AdminRegister = () => {
           >
             Go to Admin Login
           </button>
-
         </form>
       </motion.div>
     </div>

@@ -6,30 +6,30 @@ import { toast } from "react-hot-toast";
 import { motion, AnimatePresence } from "motion/react";
 
 const Navbar = () => {
-
   const handleListCarsClick = async () => {
-  if (!user) {
-    setShowLogin(true);
-    return;
-  }
+    if (!user) {
+      setShowLogin(true);
+      return;
+    }
 
-  const { data } = await axios.get("/api/user/data");
+    const { data } = await axios.get("/api/user/data");
 
-  if (!data.user.isVerified) {
-    navigate("/verification");
-    return;
-  }
+    if (!data.user.isVerified) {
+      navigate("/verification");
+      return;
+    }
 
-  if (!isOwner) {
-    await changeRole();
-  }
+    if (!isOwner) {
+      await changeRole();
+    }
 
-  navigate("/owner");
-};
+    navigate("/owner");
+  };
 
   const [search, setSearch] = useState("");
 
-  const { setShowLogin, user, logout, isOwner, axios, setIsOwner, fetchUser } = useAppContext();
+  const { setShowLogin, user, logout, isOwner, axios, setIsOwner, fetchUser } =
+    useAppContext();
 
   const location = useLocation();
   const [open, setOpen] = useState(false);
@@ -67,11 +67,11 @@ const Navbar = () => {
   };
 
   const handleSearch = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!search.trim()) return;
+    if (!search.trim()) return;
 
-  navigate(`/cars?search=${encodeURIComponent(search)}`);
+    navigate(`/cars?search=${encodeURIComponent(search)}`);
   };
 
   return (
@@ -109,12 +109,12 @@ const Navbar = () => {
         className="hidden sm:flex items-center gap-6 lg:gap-10"
       >
         {menuLinks
-          .filter(link => !(link.name === "Verification" && isOwner))
+          .filter((link) => !(link.name === "Verification" && isOwner))
           .map((link, index) => (
-          <motion.div key={index} variants={menuItem}>
-            <Link
-              to={link.path}
-              className="
+            <motion.div key={index} variants={menuItem}>
+              <Link
+                to={link.path}
+                className="
                 text-gray-300 font-medium tracking-wide
                 hover:text-yellow-400 transition-all duration-200
                 relative
@@ -123,11 +123,11 @@ const Navbar = () => {
                 after:w-0 after:h-[2px] after:bg-yellow-400
                 hover:after:w-full after:transition-all after:duration-300
               "
-            >
-              {link.name}
-            </Link>
-          </motion.div>
-        ))}
+              >
+                {link.name}
+              </Link>
+            </motion.div>
+          ))}
 
         {/* Search */}
         <motion.form
@@ -157,7 +157,10 @@ const Navbar = () => {
         </motion.form>
 
         {/* Buttons */}
-        <motion.div variants={menuItem} className="flex items-center gap-3 lg:gap-4">
+        <motion.div
+          variants={menuItem}
+          className="flex items-center gap-3 lg:gap-4"
+        >
           <motion.button
             whileHover={{ y: -1 }}
             whileTap={{ scale: 0.97 }}
@@ -233,7 +236,10 @@ const Navbar = () => {
                 </motion.div>
               ))}
 
-              <motion.div variants={menuItem} className="flex flex-col gap-4 mt-4">
+              <motion.div
+                variants={menuItem}
+                className="flex flex-col gap-4 mt-4"
+              >
                 <button
                   onClick={handleListCarsClick}
                   className="text-gray-200 font-semibold hover:text-yellow-400 transition-all text-left"

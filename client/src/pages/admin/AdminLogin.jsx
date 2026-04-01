@@ -31,7 +31,6 @@ const AdminLogin = () => {
       } else {
         toast.error(data.message);
       }
-
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -48,7 +47,6 @@ const AdminLogin = () => {
         relative overflow-hidden
       "
     >
-
       {/* Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-yellow-500/10 blur-[160px] rounded-full pointer-events-none" />
 
@@ -77,7 +75,6 @@ const AdminLogin = () => {
 
         {/* Form */}
         <form onSubmit={submit} className="mt-7 space-y-4">
-
           <input
             type="email"
             required
@@ -129,7 +126,6 @@ const AdminLogin = () => {
           >
             {loading ? "Logging in..." : "Login"}
           </button>
-
         </form>
       </motion.div>
     </div>

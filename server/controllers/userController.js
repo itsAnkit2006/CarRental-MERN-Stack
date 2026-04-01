@@ -1,6 +1,6 @@
-import User from "../models/User.js"
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import User from "../models/User.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import Car from "../models/Car.js";
 import Booking from "../models/Booking.js";
 
@@ -8,64 +8,66 @@ import crypto from "crypto";
 import sendEmail from "../utils/sendEmail.js";
 
 // Generate JWT Token
-const generateToken = (userId)=>{
-    const payload = userId;
-    return jwt.sign(payload, process.env.JWT_SECRET)
-}
+const generateToken = (userId) => {
+  const payload = userId;
+  return jwt.sign(payload, process.env.JWT_SECRET);
+};
 
 // Register User
-export const registerUser = async (req, res) =>{
-    try {
-        const { name, email, password, phone } = req.body
+export const registerUser = async (req, res) => {
+  try {
+    const { name, email, password, phone } = req.body;
 
-        const cleanName = name.trim();
-        const cleanEmail = email.trim().toLowerCase();
-        const cleanPhone = phone.trim();
+    const cleanName = name.trim();
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPhone = phone.trim();
 
-        if (!cleanName || !cleanEmail || !password || !cleanPhone) {
-            return res.json({ success: false, message: 'All fields are required' })
-        }
-
-        const phoneRegex = /^[6-9]\d{9}$/;
-        if (!phoneRegex.test(cleanPhone)) {
-            return res.json({ success: false, message: 'Invalid phone number' })
-        }
-
-        if (password.length < 8) {
-            return res.json({ success: false, message: 'Password must be at least 8 characters' })
-        }
-
-        const userExists = await User.findOne({
-          $or: [{ email: cleanEmail }, { phone: cleanPhone }]
-        });
-        if (userExists) {
-            return res.json({ success: false, message: 'User already exists' })
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10)
-
-        const user = await User.create({
-            name: cleanName,
-            email: cleanEmail,
-            password: hashedPassword,
-            phone: cleanPhone
-        })
-
-        const token = generateToken(user._id.toString())
-
-        res.json({ success: true, token, user })
-
-    } catch (error) {
-        console.log(error.message);
-        res.json({ success: false, message: error.message })
+    if (!cleanName || !cleanEmail || !password || !cleanPhone) {
+      return res.json({ success: false, message: "All fields are required" });
     }
-}
+
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (!phoneRegex.test(cleanPhone)) {
+      return res.json({ success: false, message: "Invalid phone number" });
+    }
+
+    if (password.length < 8) {
+      return res.json({
+        success: false,
+        message: "Password must be at least 8 characters",
+      });
+    }
+
+    const userExists = await User.findOne({
+      $or: [{ email: cleanEmail }, { phone: cleanPhone }],
+    });
+    if (userExists) {
+      return res.json({ success: false, message: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      name: cleanName,
+      email: cleanEmail,
+      password: hashedPassword,
+      phone: cleanPhone,
+    });
+
+    const token = generateToken(user._id.toString());
+
+    res.json({ success: true, token, user });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 // User Login
 export const loginUser = async (req, res) => {
   try {
     const { identifier, password } = req.body;
-    
+
     if (!identifier || !password) {
       return res.json({ success: false, message: "All fields required" });
     }
@@ -74,9 +76,7 @@ export const loginUser = async (req, res) => {
     const isEmail = identifier.includes("@");
 
     const user = await User.findOne(
-      isEmail
-        ? { email: identifier.toLowerCase() }
-        : { phone: identifier }
+      isEmail ? { email: identifier.toLowerCase() } : { phone: identifier },
     );
 
     if (!user) {
@@ -92,7 +92,6 @@ export const loginUser = async (req, res) => {
     const token = generateToken(user._id.toString());
 
     res.json({ success: true, token, user });
-
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
@@ -100,28 +99,26 @@ export const loginUser = async (req, res) => {
 };
 
 // Get User date using Token (JWT)
-export const getUserData = async (req, res) =>{
-    try {
-        const {user} = req;
-        res.json({success: true, user})
-    } catch (error) {
-        console.log(error.message);
-        res.json({success: false, message: error.message})
-    }
-}
+export const getUserData = async (req, res) => {
+  try {
+    const { user } = req;
+    res.json({ success: true, user });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 // Get all cars for the frontend
 export const getCars = async (req, res) => {
   try {
-
-    const cars = await Car.find({ isAvailable: true })
+    const cars = await Car.find({ isAvailable: true });
 
     const carsWithAvailability = await Promise.all(
       cars.map(async (car) => {
-
-        const lastBooking = await Booking
-          .findOne({ car: car._id })
-          .sort({ returnDate: -1 });
+        const lastBooking = await Booking.findOne({ car: car._id }).sort({
+          returnDate: -1,
+        });
 
         let availableFrom = null;
 
@@ -131,30 +128,26 @@ export const getCars = async (req, res) => {
 
         return {
           ...car._doc,
-          availableFrom
+          availableFrom,
         };
-      })
+      }),
     );
 
     // ONLY ONE RESPONSE
     return res.json({ success: true, cars: carsWithAvailability });
-
   } catch (error) {
     console.log(error.message);
     return res.json({ success: false, message: error.message });
   }
 };
 
-
-export const forgotPassword = async (req,res) => {
-  try{
-
+export const forgotPassword = async (req, res) => {
+  try {
     const { email } = req.body;
 
     const user = await User.findOne({ email });
 
-    if(!user)
-      return res.status(404).json({ message:"User not found" });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     const resetToken = crypto.randomBytes(32).toString("hex");
 
@@ -164,12 +157,11 @@ export const forgotPassword = async (req,res) => {
       .digest("hex");
 
     user.resetPasswordToken = hashedToken;
-    user.resetPasswordExpire = Date.now() + 15*60*1000;
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
 
     await user.save();
 
-    const resetURL =
-      `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+    const resetURL = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
     await sendEmail({
       to: user.email,
@@ -211,39 +203,32 @@ export const forgotPassword = async (req,res) => {
           If you didn't request this, ignore this email.
           </p>
       </div>
-      `
+      `,
     });
-
 
     res.json({
       success: true,
-      message: "Reset email sent"
+      message: "Reset email sent",
     });
-
-  }catch(err){
-  console.error("FORGOT PASSWORD ERROR >>>", err);
-  res.status(500).json({ message: err.message });
+  } catch (err) {
+    console.error("FORGOT PASSWORD ERROR >>>", err);
+    res.status(500).json({ message: err.message });
   }
 };
 
-
-export const resetPassword = async (req,res)=>{
-  try{
-
+export const resetPassword = async (req, res) => {
+  try {
     const token = req.params.token;
 
-    const hashedToken = crypto
-      .createHash("sha256")
-      .update(token)
-      .digest("hex");
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
     const user = await User.findOne({
       resetPasswordToken: hashedToken,
-      resetPasswordExpire: { $gt: Date.now() }
+      resetPasswordExpire: { $gt: Date.now() },
     });
 
-    if(!user)
-      return res.status(400).json({ message:"Invalid or expired token" });
+    if (!user)
+      return res.status(400).json({ message: "Invalid or expired token" });
 
     const hashed = await bcrypt.hash(req.body.password, 10);
     user.password = hashed;
@@ -255,12 +240,10 @@ export const resetPassword = async (req,res)=>{
 
     res.json({
       success: true,
-      message: "Password reset successful"
+      message: "Password reset successful",
     });
-
-  }catch(err){
-  console.log("RESET ERROR:", err.response);
-  setMsg(err.response?.data?.message || "Reset failed");
+  } catch (err) {
+    console.log("RESET ERROR:", err.response);
+    setMsg(err.response?.data?.message || "Reset failed");
   }
 };
-

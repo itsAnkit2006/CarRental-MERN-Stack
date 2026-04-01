@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const Title = ({ title, subTitle }) => {
   return (
@@ -41,7 +41,7 @@ const Title = ({ title, subTitle }) => {
         "
       />
     </>
-  )
-}
+  );
+};
 
-export default Title
+export default Title;

@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const Verifications = () => {
-
   const [preview, setPreview] = useState(null);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +24,6 @@ const Verifications = () => {
       } else {
         toast.error(data.message);
       }
-
     } catch (e) {
       toast.error(e.message);
     } finally {
@@ -42,7 +40,7 @@ const Verifications = () => {
       const { data } = await axios.post(
         "/api/admin/verify-user",
         { userId, status },
-        { headers: { Authorization: token } }
+        { headers: { Authorization: token } },
       );
 
       if (data.success) {
@@ -51,7 +49,6 @@ const Verifications = () => {
       } else {
         toast.error(data.message);
       }
-
     } catch (e) {
       toast.error(e.message);
     }
@@ -61,12 +58,30 @@ const Verifications = () => {
     const base = "px-3 py-1 rounded-full text-xs font-bold uppercase border";
 
     if (status === "verified")
-      return <span className={`${base} bg-green-500/10 text-green-400 border-green-500/20`}>Verified</span>;
+      return (
+        <span
+          className={`${base} bg-green-500/10 text-green-400 border-green-500/20`}
+        >
+          Verified
+        </span>
+      );
 
     if (status === "rejected")
-      return <span className={`${base} bg-red-500/10 text-red-400 border-red-500/20`}>Rejected</span>;
+      return (
+        <span
+          className={`${base} bg-red-500/10 text-red-400 border-red-500/20`}
+        >
+          Rejected
+        </span>
+      );
 
-    return <span className={`${base} bg-yellow-500/10 text-yellow-300 border-yellow-500/20`}>Pending</span>;
+    return (
+      <span
+        className={`${base} bg-yellow-500/10 text-yellow-300 border-yellow-500/20`}
+      >
+        Pending
+      </span>
+    );
   };
 
   return (
@@ -79,7 +94,6 @@ const Verifications = () => {
         relative overflow-hidden
       "
     >
-
       {/* Glow */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-yellow-500/10 blur-[150px] rounded-full pointer-events-none" />
 
@@ -101,16 +115,15 @@ const Verifications = () => {
         </div>
       ) : (
         <div className="relative z-10 mt-10 space-y-5">
-
           {/* EMPTY */}
           {items.length === 0 && (
-            <div className="
+            <div
+              className="
               rounded-3xl p-8 text-center
               bg-white/5 border border-yellow-500/15
-            ">
-              <p className="text-gray-400">
-                No verification requests
-              </p>
+            "
+            >
+              <p className="text-gray-400">No verification requests</p>
             </div>
           )}
 
@@ -127,32 +140,25 @@ const Verifications = () => {
                 transition-all duration-300
               "
             >
-
               <div className="flex flex-col md:flex-row md:justify-between gap-5">
-
                 {/* LEFT */}
                 <div>
                   <p className="text-gray-200 font-semibold text-lg">
                     {v.user?.name || "User"}
                   </p>
 
-                  <p className="text-sm text-gray-500">
-                    {v.user?.email}
-                  </p>
+                  <p className="text-sm text-gray-500">{v.user?.email}</p>
 
                   <p className="text-sm text-gray-400 mt-3">
                     <span className="text-gray-300 font-semibold">ID:</span>{" "}
                     {v.id_type} — {v.id_number}
                   </p>
 
-                  <div className="mt-3">
-                    {statusBadge(v.status)}
-                  </div>
+                  <div className="mt-3">{statusBadge(v.status)}</div>
                 </div>
 
                 {/* ACTIONS */}
                 <div className="flex flex-wrap gap-2 items-center">
-
                   {/* View Doc */}
                   {v.documentImage && (
                     <button
@@ -194,9 +200,7 @@ const Verifications = () => {
                   >
                     Reject
                   </button>
-
                 </div>
-
               </div>
             </div>
           ))}
@@ -221,7 +225,6 @@ const Verifications = () => {
           />
         </div>
       )}
-
     </div>
   );
 };

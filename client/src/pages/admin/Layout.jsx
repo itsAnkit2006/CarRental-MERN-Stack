@@ -33,10 +33,18 @@ const AdminLayout = () => {
         </div>
 
         <div className="mt-6 flex flex-wrap gap-2">
-          <NavLink to="/admin" end className={linkClass}>Dashboard</NavLink>
-          <NavLink to="/admin/verifications" className={linkClass}>Verifications</NavLink>
-          <NavLink to="/admin/payments" className={linkClass}>Payments</NavLink>
-          <NavLink to="/admin/feedback" className={linkClass}>Feedback</NavLink>
+          <NavLink to="/admin" end className={linkClass}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/admin/verifications" className={linkClass}>
+            Verifications
+          </NavLink>
+          <NavLink to="/admin/payments" className={linkClass}>
+            Payments
+          </NavLink>
+          <NavLink to="/admin/feedback" className={linkClass}>
+            Feedback
+          </NavLink>
         </div>
       </div>
 

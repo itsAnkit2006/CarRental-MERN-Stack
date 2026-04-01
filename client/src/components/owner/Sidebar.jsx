@@ -1,36 +1,36 @@
-import React, { useState } from 'react'
-import { assets, ownerMenuLinks } from '../../assets/assets'
-import { NavLink, useLocation } from 'react-router-dom'
-import { useAppContext } from '../../context/AppContext'
-import toast from 'react-hot-toast'
+import React, { useState } from "react";
+import { assets, ownerMenuLinks } from "../../assets/assets";
+import { NavLink, useLocation } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const Sidebar = ({ mobile = false }) => {
-
-  const { user, axios, fetchUser } = useAppContext()
-  const location = useLocation()
-  const [image, setImage] = useState('')
+  const { user, axios, fetchUser } = useAppContext();
+  const location = useLocation();
+  const [image, setImage] = useState("");
 
   const updateImage = async () => {
     try {
-      const formData = new FormData()
-      formData.append('image', image)
+      const formData = new FormData();
+      formData.append("image", image);
 
-      const { data } = await axios.post('/api/owner/update-image', formData)
+      const { data } = await axios.post("/api/owner/update-image", formData);
 
       if (data.success) {
-        fetchUser()
-        toast.success(data.message)
-        setImage('')
+        fetchUser();
+        toast.success(data.message);
+        setImage("");
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
-  }
+  };
 
   return (
-    <div className={`
+    <div
+      className={`
       relative min-h-screen flex flex-col items-center
       ${mobile ? "w-64" : "hidden md:flex md:w-64"}
       pt-10
@@ -39,7 +39,6 @@ const Sidebar = ({ mobile = false }) => {
       text-sm
     `}
     >
-
       {/* Profile */}
       <div className="group relative flex flex-col items-center w-full">
         <label htmlFor="image" className="block relative">
@@ -100,10 +99,12 @@ const Sidebar = ({ mobile = false }) => {
         )}
 
         {/* Name */}
-        <p className={`
+        <p
+          className={`
           mt-4 text-base font-semibold text-gray-200
           ${mobile ? "block" : "hidden md:block"}
-          `}>
+          `}
+        >
           {user?.name}
         </p>
       </div>
@@ -122,9 +123,11 @@ const Sidebar = ({ mobile = false }) => {
                 py-3 px-4 md:px-5
                 transition-all duration-200
                 text-sm sm:text-base
-                ${active
-                  ? "bg-white/5 text-primary"
-                  : "text-gray-300 hover:bg-white/5"}
+                ${
+                  active
+                    ? "bg-white/5 text-primary"
+                    : "text-gray-300 hover:bg-white/5"
+                }
               `}
             >
               <img
@@ -133,10 +136,12 @@ const Sidebar = ({ mobile = false }) => {
                 className="w-5 h-5 opacity-90 flex-shrink-0"
               />
 
-              <span className={`
+              <span
+                className={`
                 font-medium
                 ${mobile ? "block" : "hidden md:block"}
-                `}>
+                `}
+              >
                 {link.name}
               </span>
 
@@ -153,7 +158,7 @@ const Sidebar = ({ mobile = false }) => {
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

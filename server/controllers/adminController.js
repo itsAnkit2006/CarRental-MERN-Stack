@@ -18,10 +18,18 @@ export const adminLogin = async (req, res) => {
     if (!admin) return res.json({ success: false, message: "Admin not found" });
 
     const ok = await bcrypt.compare(password, admin.password);
-    if (!ok) return res.json({ success: false, message: "Invalid credentials" });
+    if (!ok)
+      return res.json({ success: false, message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: admin._id, role: "admin" }, process.env.JWT_SECRET);
-    res.json({ success: true, token, admin: { email: admin.email, name: admin.name } });
+    const token = jwt.sign(
+      { id: admin._id, role: "admin" },
+      process.env.JWT_SECRET,
+    );
+    res.json({
+      success: true,
+      token,
+      admin: { email: admin.email, name: admin.name },
+    });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
@@ -30,13 +38,14 @@ export const adminLogin = async (req, res) => {
 
 export const adminStats = async (req, res) => {
   try {
-    const [users, cars, bookings, payments, pendingVerifications] = await Promise.all([
-      User.countDocuments(),
-      Car.countDocuments(),
-      Booking.countDocuments(),
-      Payment.countDocuments(),
-      UserVerification.countDocuments({ status: "pending" }),
-    ]);
+    const [users, cars, bookings, payments, pendingVerifications] =
+      await Promise.all([
+        User.countDocuments(),
+        Car.countDocuments(),
+        Booking.countDocuments(),
+        Payment.countDocuments(),
+        UserVerification.countDocuments({ status: "pending" }),
+      ]);
 
     const logs = await TransactionLog.find().sort({ createdAt: -1 }).limit(10);
 
@@ -69,7 +78,10 @@ export const verifyUser = async (req, res) => {
     const { userId, status } = req.body;
 
     if (!userId || !status)
-      return res.json({ success: false, message: "userId and status required" });
+      return res.json({
+        success: false,
+        message: "userId and status required",
+      });
 
     const verification = await UserVerification.findOne({ user: userId });
     if (!verification)
@@ -79,7 +91,6 @@ export const verifyUser = async (req, res) => {
     verification.verified_on = status === "verified" ? new Date() : null;
     await verification.save();
 
-    // 🔥🔥🔥 MAIN FIX
     if (status === "verified") {
       await User.findByIdAndUpdate(userId, { isVerified: true });
     } else {
@@ -106,7 +117,7 @@ export const registerAdmin = async (req, res) => {
       return res.json({ success: false, message: "All fields required" });
     }
 
-    // ✅ Secret key check
+    // Secret key check
     if (secret !== process.env.ADMIN_REGISTER_SECRET) {
       return res.json({ success: false, message: "Invalid secret key" });
     }
