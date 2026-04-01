@@ -137,7 +137,7 @@ const MyBookings = () => {
               {/* IMAGE */}
               <div className="md:col-span-3 relative overflow-hidden rounded-2xl h-40 sm:h-44">
                 <img
-                  src={booking.car.image}
+                  src={booking.car?.images?.[0]}
                   className="w-full h-full object-cover group-hover:scale-105 transition"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent" />
