@@ -95,7 +95,7 @@ const ManageBookings = () => {
                     <td className="p-4">
                       <div className="flex items-center gap-4">
                         <img
-                          src={booking.car?.image || "/fallback-car.png"}
+                          src={booking.car?.images?.[0] || "/fallback-car.png"}
                           className="
                             h-12 w-12
                             rounded-xl object-cover
